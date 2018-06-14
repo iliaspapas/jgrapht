@@ -18,7 +18,6 @@
 package org.jgrapht.alg.flow;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.shortestpath.*;
 import org.jgrapht.graph.*;
@@ -48,8 +47,8 @@ public class GusfieldEquivalentFlowTreeTest
         assertTrue(GraphTests.isTree(equivalentFlowTree));
 
         // Find the minimum cut in the graph
-        StoerWagnerMinimumCut<Integer, DefaultWeightedEdge> minimumCutAlg =
-            new StoerWagnerMinimumCut<>(network);
+        org.jgrapht.alg.StoerWagnerMinimumCut<Integer, DefaultWeightedEdge> minimumCutAlg =
+            new org.jgrapht.alg.StoerWagnerMinimumCut<>(network);
         double expectedMinimumCut = minimumCutAlg.minCutWeight();
         double cheapestEdge = equivalentFlowTree
             .edgeSet().stream().mapToDouble(equivalentFlowTree::getEdgeWeight).min().getAsDouble();

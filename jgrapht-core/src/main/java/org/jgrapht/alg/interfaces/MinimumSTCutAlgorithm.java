@@ -24,7 +24,7 @@ import java.util.*;
  * cut. A cut is a partitioning of the vertices into two disjoint sets $S, T $such that $s \in S, t
  * \in T$, and that $S \cup T = V%. The <i>capacity</i> of a cut is defined as the sum of the
  * weights of the edges from $S$ to $T$. In case of a directed graph, only the edges with their tail
- * in $S$ and their head in $T$ are counted. In cased of a undirected graph, all edges with one
+ * in $S$ and their head in $T$ are counted. In case of an undirected graph, all edges with one
  * endpoint in $S$ and one endpoint in $T$ are counted. For a given $s$ and $t$, this class computes
  * two partitions $S$ and $T$ such that the capacity of the cut is minimized. When each edge has
  * equal weight, by definition this class minimizes the number of edges from $S$ to $T$.
