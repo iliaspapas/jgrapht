@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -232,8 +232,8 @@ public abstract class MaximumCardinalityBipartiteMatchingTest
         assertEquals(m.getEdges().size() * 2, matched.size()); // Ensure that there are no
                                                                // self-loops
 
-        EdmondsMaximumCardinalityMatching<V, E> matcher =
-            new EdmondsMaximumCardinalityMatching<>(g);
+        DenseEdmondsMaximumCardinalityMatching<V, E> matcher =
+            new DenseEdmondsMaximumCardinalityMatching<>(g);
         assertTrue(matcher.isMaximumMatching(m)); // Certify that the matching is indeed maximum
     }
 

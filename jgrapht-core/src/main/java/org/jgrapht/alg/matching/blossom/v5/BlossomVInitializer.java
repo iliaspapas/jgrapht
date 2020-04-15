@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,6 +18,7 @@
 package org.jgrapht.alg.matching.blossom.v5;
 
 import org.jgrapht.*;
+import org.jgrapht.util.*;
 import org.jheaps.*;
 import org.jheaps.tree.*;
 
@@ -150,7 +151,8 @@ class BlossomVInitializer<V, E>
         allocateTrees();
         initAuxiliaryGraph();
         return new BlossomVState<>(
-                graph, nodes, edges, nodeNum, edgeNum, nodeNum, graphVertices, graphEdges, options, minEdgeWeight);
+            graph, nodes, edges, nodeNum, edgeNum, nodeNum, graphVertices, graphEdges, options,
+            minEdgeWeight);
     }
 
     /**
@@ -167,7 +169,8 @@ class BlossomVInitializer<V, E>
         allocateTrees();
         initAuxiliaryGraph();
         return new BlossomVState<>(
-                graph, nodes, edges, nodeNum, edgeNum, treeNum, graphVertices, graphEdges, options, minEdgeWeight);
+            graph, nodes, edges, nodeNum, edgeNum, treeNum, graphVertices, graphEdges, options,
+            minEdgeWeight);
     }
 
     /**
@@ -185,7 +188,8 @@ class BlossomVInitializer<V, E>
         int treeNum = initFractional();
         initAuxiliaryGraph();
         return new BlossomVState<>(
-                graph, nodes, edges, nodeNum, edgeNum, treeNum, graphVertices, graphEdges, options, minEdgeWeight);
+            graph, nodes, edges, nodeNum, edgeNum, treeNum, graphVertices, graphEdges, options,
+            minEdgeWeight);
     }
 
     /**
@@ -198,7 +202,7 @@ class BlossomVInitializer<V, E>
         edges = new BlossomVEdge[expectedEdgeNum];
         graphVertices = new ArrayList<>(nodeNum);
         graphEdges = new ArrayList<>(expectedEdgeNum);
-        HashMap<V, BlossomVNode> vertexMap = new HashMap<>(nodeNum);
+        HashMap<V, BlossomVNode> vertexMap = CollectionUtil.newHashMapWithExpectedSize(nodeNum);
         int i = 0;
         // maps nodes
         for (V vertex : graph.vertexSet()) {
@@ -210,14 +214,16 @@ class BlossomVInitializer<V, E>
         nodes[nodeNum] = new BlossomVNode(nodeNum); // auxiliary node to keep track of the first
                                                     // item in the linked list of tree roots
         i = 0;
-        double minEdgeWeight = graph.edgeSet().stream().map(graph::getEdgeWeight).min(Comparator.naturalOrder()).orElse(0d);
+        double minEdgeWeight = graph
+            .edgeSet().stream().map(graph::getEdgeWeight).min(Comparator.naturalOrder()).orElse(0d);
         // maps edges
         for (E e : graph.edgeSet()) {
             BlossomVNode source = vertexMap.get(graph.getEdgeSource(e));
             BlossomVNode target = vertexMap.get(graph.getEdgeTarget(e));
             if (source != target) { // we avoid self-loops in order to support pseudographs
                 edgeNum++;
-                BlossomVEdge edge = addEdge(source, target, graph.getEdgeWeight(e) - minEdgeWeight, i);
+                BlossomVEdge edge =
+                    addEdge(source, target, graph.getEdgeWeight(e) - minEdgeWeight, i);
                 edges[i] = edge;
                 graphEdges.add(e);
                 i++;

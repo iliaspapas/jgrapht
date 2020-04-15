@@ -2,7 +2,49 @@
 
 Changes to JGraphT in each version:
 
-- **version 1.3.1** (Under development):
+- **version 1.4.1** (under development):
+    - Prepared release cycle 1.4.1: removed deprecated code, updated dependencies, upgraded java to version 11 (contributed by Joris Kinable)
+    - Bring back vertex factory in importers (contributed by Dimitrios Michail)
+    - Added `LabelPropagationClustering` algorithm (contributed by Dimitrios Michail)
+    - Make sure `addVertex()` fires listener event (spotted by akirschbaum, contributed by Dimitrios Michail)
+    - Change queue implementation from LinkedList to ArrayDeque (spotted by shevek, contributed by Ritik Goyal)
+    - Added TSPLIB95 graph and tour importer (contributed by Hannes Wellmann)
+    - Fixed issue with inconsistent graph after duplicate edge addition (spotted by Greg Gibeling, contributed by Dimitrios Michail)
+    - Fixed issue with failing `DirectedScaleFreeGraphGenerator` by fixing the tests seed (contributed by Timofey Chudakov)
+
+- **version 1.4.0** (21-Feb-2020):
+    - Prepared release cycle 1.3.2: removed deprecated code, updated dependencies, etc (contributed by Joris Kinable)
+    - Format code in parallel (contributed by Joris Kinable)
+    - Fix edge reuse bug in KDisjointShortestPaths implementations (contributed by Benjamin Krogh)
+    - Updated Yen's algorithm to operate on pseudo graphs correctly (contributed by Semen Chudakov)
+    - Updated Guava to version 28.0 (contributed by John Sichi)
+    - Fixed bug in `BiconnectivityInspector` which would occasionally return an incorrect set of biconnected components (contributed by Reynaldo Gil Pons)
+	- Allow edge selection to be overridden in `CrossComponentIterator` (contributed by Sean Hudson)
+    - Reuse traversal listener implementation in tests (contributed by Timofey Chudakov)
+    - Fixed bug in `BetweennessCentrality` which occasionally returned in incorrect centrality score for vertices in weighted graphs (contributed by Gil Pons)
+    - Added path length limit to `HawickJamesSimpleCycles` (contributed by Edwin Ouwehand)
+    - Added links in Guava adapater package-info (contributed by John Sichi)
+    - Added Boyer-Myrvold planarity testing algorithm (contributed by Timofey Chudakov)
+    - Added contraction hierarchy precomputation algorithm (contributed by Semen Chudakov)
+    - Enhanced `IntegerComponentNameProvider` to take arbitrary base (contributed by Amr Alhossary)
+    - Fixed a bug in the `GraphWalk.equals()` method which caused a NullpointerException when invoked on an empty walk (contributed by Volkov Viktor)
+    - Added k-spanning-tree clustering algorithm (contributed by Dimitrios Michail)
+    - Added directed scale-free graph generator (contributed by Amr Alhossary)
+    - Enhanced `CompleteGraphGenerator` and `CompleteBipartiteGraphGenerator` to generate edges between existing vertices (contributed by Joris Kinable)
+    - Added efficient bidirectional Dijkstra implementation based on contraction hierarchy (contributed by Semen Chudakov)
+    - Added sparse graphs and event-based importers, and improved numerous algorithms (contributed by Dimitrios Michail)
+    - Added `CollectionUtil` for preallocating maps and sets correctly (contributed by Hannes Wellmann)
+    - Added efficient many-to-many shortest path algorithm based on contraction hierarchy (contributed by Semen Chudakov)
+    - Added greedy, nearest-insertion, nearest-neighbor heuristic for TSP and improved stability in two-opt heuristic (contributed by Peter Harman)
+    - Enhanced `DoublyLinkedList` by implementing the `List` and `Deque` interfaces (contributed by Hannes Wellmann)
+    - Added dedicated class for `ContractionHierarchy` (contributed by Semen Chudakov)
+    - Use try with resources in default implementations of GraphImporter and GraphExporter (contributed by Hannes Wellmann)
+    - Fixed naive lca bug and code cleanup (reported by Shinpei Hayashi, contributed by Timofey Chudakov)
+    - Enhanced Javadoc generation by adding compatibility with newer JDKs (contributed by Dimitrios Michail)
+    - Reflection speedup (suggested by shevek, contributed by Dimitrios Michail)
+    - Added a graph drawing component, including various layout algorithms incl., random, circular, and tree layouts, the Fruchterman and Reingold Force-Directed Placement algorithm, and a variation of the latter augmented with the Barnes-Hut indexing technique (contributed by Dimitrios Michail)
+
+- **version 1.3.1** (3-Jun-2019):
     - Prepared release cycle 1.3.1: removed deprecated code, updated dependencies, etc (contributed by Joris Kinable)
     - Added new logo (from 99designs, with site additions by John Sichi and Joris Kinable)
     - Added new website (contributed by John Sichi)
@@ -25,11 +67,14 @@ Changes to JGraphT in each version:
     - Added Yen's k shortest loopless paths algorithm (contributed by Semen Chudakov)
     - Defer graph vertex iterator initialization in CrossComponentIterator (contributed by John Sichi)
     - Updated jgraphx version to 3.9.8.1 (contributed by John Sichi)
-    - Added JSON exporter (contributed by Dimitrios Michail)
+    - Added JSON exporter and importer (contributed by Dimitrios Michail)
     - Enhanced `DirectedAcyclicGraph` to support multiple edges (contributed by Dimitrios Michail based on a suggestion by Sarat Chandra Balla)
     - Refactored `SerializationTestUtils` and made it generic (contributed by Lavish Kothari)
     - Added more serialization test coverage (contributed by Lavish Kothari)
     - Added Goldberg's algorithms for the calculation of maximum density subgraphs (contributed by Andre Immig)
+    - Optimize UnmodifiableUnionSet to lazily read live sizes from underlying sets (contributed by John Sichi)
+    - Added Eppsteins k-shortest paths algorithm (contributed by Semen Chudakov)
+    - Added serialization test for `AsGraphUnion` and made `WeightCombiner` default implementations serializable (contributed by Charul Bhanawat)
 
 - **version 1.3.0** (12-Nov-2018):
     - Prepared release cycle 1.2.1: removed deprecated code, updated dependencies, etc (contributed by Joris Kinable)

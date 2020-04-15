@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Alexandru Valeanu and Contributors.
+ * (C) Copyright 2018-2020, by Alexandru Valeanu and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -146,7 +146,8 @@ public class HeavyPathDecompositionTest
 
             Collections.reverse(postOrder);
 
-            Map<V, Integer> sizeSubtree = new HashMap<>(graph.vertexSet().size());
+            Map<V, Integer> sizeSubtree =
+                CollectionUtil.newHashMapWithExpectedSize(graph.vertexSet().size());
             for (V v : postOrder) {
                 sizeSubtree.put(v, 1);
 

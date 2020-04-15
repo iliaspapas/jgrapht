@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Kirill Vishnyakov and Contributors.
+ * (C) Copyright 2018-2020, by Kirill Vishnyakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -158,7 +158,7 @@ public class DinicMFImpl<V, E>
             getVertexExtension(v).level = -1;
         }
 
-        Queue<VertexExtension> queue = new LinkedList<>();
+        Queue<VertexExtension> queue = new ArrayDeque<>();
         queue.offer(currentSource);
 
         currentSource.level = 0;

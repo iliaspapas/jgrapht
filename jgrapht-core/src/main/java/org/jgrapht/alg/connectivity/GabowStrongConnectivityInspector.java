@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2013-2017, by Sarah Komla-Ebri and Contributors.
+ * (C) Copyright 2013-2020, by Sarah Komla-Ebri and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,6 +18,7 @@
 package org.jgrapht.alg.connectivity;
 
 import org.jgrapht.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 
@@ -89,7 +90,7 @@ public class GabowStrongConnectivityInspector<V, E>
     private void createVertexNumber()
     {
         c = graph.vertexSet().size();
-        vertexToVertexNumber = new HashMap<>(c);
+        vertexToVertexNumber = CollectionUtil.newHashMapWithExpectedSize(c);
 
         for (V vertex : graph.vertexSet()) {
             vertexToVertexNumber.put(vertex, new VertexNumber<>(vertex, 0));

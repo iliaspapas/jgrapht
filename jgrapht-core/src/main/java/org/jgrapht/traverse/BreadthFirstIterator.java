@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  * A breadth-first iterator for a directed or undirected graph.
- * 
+ *
  * <p>
  * For this iterator to work correctly the graph must not be modified during iteration. Currently
  * there are no means to ensure that, nor to fail-fast. The results of such modifications are
@@ -79,7 +79,7 @@ public class BreadthFirstIterator<V, E>
     }
 
     /**
-     * @see CrossComponentIterator#isConnectedComponentExhausted()
+     * {@inheritDoc}
      */
     @Override
     protected boolean isConnectedComponentExhausted()
@@ -88,7 +88,7 @@ public class BreadthFirstIterator<V, E>
     }
 
     /**
-     * @see CrossComponentIterator#encounterVertex(Object, Object)
+     * {@inheritDoc}
      */
     @Override
     protected void encounterVertex(V vertex, E edge)
@@ -100,7 +100,7 @@ public class BreadthFirstIterator<V, E>
     }
 
     /**
-     * @see CrossComponentIterator#encounterVertexAgain(Object, Object)
+     * {@inheritDoc}
      */
     @Override
     protected void encounterVertexAgain(V vertex, E edge)
@@ -111,7 +111,7 @@ public class BreadthFirstIterator<V, E>
      * Returns the parent node of vertex $v$ in the BFS search tree, or null if $v$ is the root
      * node. This method can only be invoked on a vertex $v$ once the iterator has visited vertex
      * $v$!
-     * 
+     *
      * @param v vertex
      * @return parent node of vertex $v$ in the BFS search tree, or null if $v$ is a root node
      */
@@ -129,7 +129,7 @@ public class BreadthFirstIterator<V, E>
      * Returns the edge connecting vertex $v$ to its parent in the spanning tree formed by the BFS
      * search, or null if $v$ is a root node. This method can only be invoked on a vertex $v$ once
      * the iterator has visited vertex $v$!
-     * 
+     *
      * @param v vertex
      * @return edge connecting vertex $v$ in the BFS search tree to its parent, or null if $v$ is a
      *         root node
@@ -145,7 +145,7 @@ public class BreadthFirstIterator<V, E>
      * the number of edges traversed on the path from the root of the BFS tree to vertex $v$. The
      * root of the search tree has depth 0. This method can only be invoked on a vertex $v$ once the
      * iterator has visited vertex $v$!
-     * 
+     *
      * @param v vertex
      * @return depth of vertex $v$ in the search tree
      */
@@ -164,21 +164,46 @@ public class BreadthFirstIterator<V, E>
         return queue.removeFirst();
     }
 
-    static class SearchNodeData<E>
+    /**
+     * Data kept for discovered vertices.
+     *
+     * @param <E> the graph edge type
+     */
+    protected static class SearchNodeData<E>
     {
-        /**
-         * Edge to parent
-         */
-        final E edge;
-        /**
-         * Depth of node in search tree
-         */
-        final int depth;
+        private final E edge;
+        private final int depth;
 
-        SearchNodeData(E edge, int depth)
+        /**
+         * Constructor
+         * 
+         * @param edge edge to parent
+         * @param depth depth of node in search tree
+         */
+        public SearchNodeData(E edge, int depth)
         {
             this.edge = edge;
             this.depth = depth;
+        }
+
+        /**
+         * Edge to parent
+         * 
+         * @return the edge to the parent
+         */
+        public E getEdge()
+        {
+            return edge;
+        }
+
+        /**
+         * Depth of node in search tree
+         * 
+         * @return the depth of the node in the search tree
+         */
+        public int getDepth()
+        {
+            return depth;
         }
     }
 }

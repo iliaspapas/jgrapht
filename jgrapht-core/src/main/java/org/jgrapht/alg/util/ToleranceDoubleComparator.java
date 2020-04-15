@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,6 +17,7 @@
  */
 package org.jgrapht.alg.util;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -26,8 +27,11 @@ import java.util.*;
  */
 public class ToleranceDoubleComparator
     implements
-    Comparator<Double>
+    Comparator<Double>,
+    Serializable
 {
+    private static final long serialVersionUID = -3819451375975842372L;
+
     /**
      * Default tolerance used by the comparator.
      */

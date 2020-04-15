@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/jgrapht/jgrapht.svg?branch=master)](https://travis-ci.org/jgrapht/jgrapht)
-[![codecov.io](http://codecov.io/github/jgrapht/jgrapht/coverage.svg?branch=master)](http://codecov.io/github/jgrapht/jgrapht?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jgrapht/jgrapht/badge.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22jgrapht%22)
 [![Snapshot](https://img.shields.io/nexus/s/https/oss.sonatype.org/org.jgrapht/jgrapht.svg)](https://oss.sonatype.org/content/repositories/snapshots/org/jgrapht/jgrapht-core)
 [![License](https://img.shields.io/badge/license-LGPL%202.1-blue.svg)](http://www.gnu.org/licenses/lgpl-2.1.html)
@@ -10,11 +9,11 @@
 
 <img src="https://raw.githubusercontent.com/jgrapht/jgrapht/master/etc/logo/jgrapht-logo-transparent-cropped.png" width="361" height="200" align="right" />
 
-Released: November 12, 2018</p>
+Released: February 21, 2020</p>
 
 Written by [Barak Naveh](mailto:barak_naveh@users.sourceforge.net)  and Contributors
 
-(C) Copyright 2003-2018, by Barak Naveh and Contributors. All rights
+(C) Copyright 2003-2020, by Barak Naveh and Contributors. All rights
 reserved.
 
 Please address all contributions, suggestions, and inquiries to the [user mailing list](https://lists.sourceforge.net/lists/listinfo/jgrapht-users)
@@ -89,7 +88,7 @@ Starting from 0.9.0, every JGraphT release is published to the Maven Central Rep
 ```
   <groupId>org.jgrapht</groupId>
   <artifactId>jgrapht-core</artifactId>
-  <version>1.3.0</version>
+  <version>1.4.0</version>
 ```
 
 We have also started auto-publishing SNAPSHOT builds for every successful commit to master.  To use the bleeding edge:
@@ -97,7 +96,7 @@ We have also started auto-publishing SNAPSHOT builds for every successful commit
 ```
   <groupId>org.jgrapht</groupId>
   <artifactId>jgrapht-core</artifactId>
-  <version>1.3.1-SNAPSHOT</version>
+  <version>1.4.1-SNAPSHOT</version>
 ```
 
 and make sure the snapshot repository is enabled:

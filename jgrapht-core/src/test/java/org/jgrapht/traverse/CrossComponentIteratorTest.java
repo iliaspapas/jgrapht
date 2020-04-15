@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Liviu Rau and Contributors.
+ * (C) Copyright 2003-2020, by Liviu Rau and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -25,7 +25,8 @@ import org.junit.*;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * A basis for testing {@link org.jgrapht.traverse.BreadthFirstIterator} and

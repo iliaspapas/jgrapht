@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2016-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -199,7 +199,7 @@ public class PadbergRaoOddMinimumCutset<V, E>
      */
     private double calculateMinCutWithTreeCompression()
     {
-        Queue<Set<V>> queue = new LinkedList<>();
+        Queue<Set<V>> queue = new ArrayDeque<>();
         queue.add(oddVertices);
 
         // Keep splitting the clusters until each resulting cluster containes exactly one vertex.

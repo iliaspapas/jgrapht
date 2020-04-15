@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,14 +18,16 @@
 package org.jgrapht.alg.matching.blossom.v5;
 
 /**
- * Enum specifying the objective sense of the algorithm. {@link ObjectiveSense#MAXIMIZE}
- * means the goal is to maximize the linear programming objective value,
- * {@link ObjectiveSense#MINIMIZE} - to minimize the linear programming objective value.
+ * Enum specifying the objective sense of the algorithm. {@link ObjectiveSense#MAXIMIZE} means the
+ * goal is to maximize the linear programming objective value, {@link ObjectiveSense#MINIMIZE} - to
+ * minimize the linear programming objective value.
  *
  * @author Timofey Chudakov
  * @see KolmogorovWeightedMatching
  * @see KolmogorovWeightedPerfectMatching
  */
-public enum ObjectiveSense {
-    MAXIMIZE, MINIMIZE
+public enum ObjectiveSense
+{
+    MAXIMIZE,
+    MINIMIZE
 }

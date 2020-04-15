@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Alexandru Valeanu and Contributors.
+ * (C) Copyright 2018-2020, by Alexandru Valeanu and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -151,7 +151,8 @@ public class AHURootedTreeIsomorphismInspector<V, E>
             forwardMapping.put(u, v);
             backwardMapping.put(v, u);
 
-            Map<Integer, List<V>> labelList = new HashMap<>(tree1.degreeOf(u));
+            Map<Integer, List<V>> labelList =
+                CollectionUtil.newHashMapWithExpectedSize(tree1.degreeOf(u));
 
             for (E edge : tree1.outgoingEdgesOf(u)) {
                 V next = Graphs.getOppositeVertex(tree1, edge, u);
@@ -196,8 +197,8 @@ public class AHURootedTreeIsomorphismInspector<V, E>
 
         @SuppressWarnings("unchecked") Map<V, Integer>[] canonicalName =
             (Map<V, Integer>[]) Array.newInstance(Map.class, 2);
-        canonicalName[0] = new HashMap<>(tree1.vertexSet().size());
-        canonicalName[1] = new HashMap<>(tree2.vertexSet().size());
+        canonicalName[0] = CollectionUtil.newHashMapWithExpectedSize(tree1.vertexSet().size());
+        canonicalName[1] = CollectionUtil.newHashMapWithExpectedSize(tree2.vertexSet().size());
 
         List<List<V>> nodesByLevel1 = computeLevels(tree1, root1);
         List<List<V>> nodesByLevel2 = computeLevels(tree2, root2);

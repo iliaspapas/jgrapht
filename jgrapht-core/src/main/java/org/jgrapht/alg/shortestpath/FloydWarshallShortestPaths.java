@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2009-2018, by Tom Larkworthy and Contributors.
+ * (C) Copyright 2009-2020, by Tom Larkworthy and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -75,7 +75,7 @@ public class FloydWarshallShortestPaths<V, E>
         Collections.sort(
             vertices, new VertexDegreeComparator<>(graph, VertexDegreeComparator.Order.ASCENDING));
         this.degrees = new ArrayList<>();
-        this.vertexIndices = new HashMap<>(this.vertices.size());
+        this.vertexIndices = CollectionUtil.newHashMapWithExpectedSize(this.vertices.size());
 
         int i = 0;
         int minDegreeOne = vertices.size();

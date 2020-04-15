@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -31,7 +31,7 @@ import java.util.*;
  *
  * <p>
  * This graph does <i>not</i> pass the hashCode and equals operations through to the backing graph,
- * but relies on <tt>Object</tt>'s <tt>equals</tt> and <tt>hashCode</tt> methods.
+ * but relies on <code>Object</code>'s <code>equals</code> and <code>hashCode</code> methods.
  * </p>
  *
  * @param <V> the graph vertex type
@@ -147,6 +147,16 @@ public class DefaultListenableGraph<V, E>
         addToListenerList(graphListeners, l);
     }
 
+    @Override
+    public V addVertex() {
+        V v = super.addVertex();
+        if (v != null) { 
+            fireVertexAdded(v);    
+        }
+        return v;
+    }
+    
+    
     @Override
     public boolean addVertex(V v)
     {

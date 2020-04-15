@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2009-2018, by Ilya Razenshteyn and Contributors.
+ * (C) Copyright 2009-2020, by Ilya Razenshteyn and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,6 +17,8 @@
  */
 package org.jgrapht.util;
 
+import java.io.*;
+
 /**
  * Binary operator for edge weights. There are some prewritten operators.
  */
@@ -25,32 +27,32 @@ public interface WeightCombiner
     /**
      * Sum of weights.
      */
-    WeightCombiner SUM = (a, b) -> a + b;
+    WeightCombiner SUM = (WeightCombiner & Serializable) (a, b) -> a + b;
 
     /**
      * Multiplication of weights.
      */
-    WeightCombiner MULT = (a, b) -> a * b;
+    WeightCombiner MULT = (WeightCombiner & Serializable) (a, b) -> a * b;
 
     /**
      * Minimum weight.
      */
-    WeightCombiner MIN = Math::min;
+    WeightCombiner MIN = (WeightCombiner & Serializable) Math::min;
 
     /**
      * Maximum weight.
      */
-    WeightCombiner MAX = Math::max;
+    WeightCombiner MAX = (WeightCombiner & Serializable) Math::max;
 
     /**
      * First weight.
      */
-    WeightCombiner FIRST = (a, b) -> a;
+    WeightCombiner FIRST = (WeightCombiner & Serializable) (a, b) -> a;
 
     /**
      * Second weight.
      */
-    WeightCombiner SECOND = (a, b) -> b;
+    WeightCombiner SECOND = (WeightCombiner & Serializable) (a, b) -> b;
 
     /**
      * Combines two weights.

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -212,8 +212,7 @@ public class BlossomVInitializerTest
             new KolmogorovWeightedPerfectMatching<>(graph, fractionalOptions);
         MatchingAlgorithm.Matching<Integer, DefaultWeightedEdge> matching =
             perfectMatching.getMatching();
-        KolmogorovWeightedPerfectMatching.Statistics statistics =
-            perfectMatching.getStatistics();
+        KolmogorovWeightedPerfectMatching.Statistics statistics = perfectMatching.getStatistics();
 
         assertEquals(8, matching.getWeight(), EPS);
         assertEquals(0, statistics.growNum);
@@ -240,8 +239,7 @@ public class BlossomVInitializerTest
             new KolmogorovWeightedPerfectMatching<>(graph, fractionalOptions);
         MatchingAlgorithm.Matching<Integer, DefaultWeightedEdge> matching =
             perfectMatching.getMatching();
-        KolmogorovWeightedPerfectMatching.Statistics statistics =
-            perfectMatching.getStatistics();
+        KolmogorovWeightedPerfectMatching.Statistics statistics = perfectMatching.getStatistics();
 
         assertEquals(14, matching.getWeight(), EPS);
         assertEquals(0, statistics.growNum);
@@ -269,8 +267,7 @@ public class BlossomVInitializerTest
             new KolmogorovWeightedPerfectMatching<>(graph, fractionalOptions);
         MatchingAlgorithm.Matching<Integer, DefaultWeightedEdge> matching =
             perfectMatching.getMatching();
-        KolmogorovWeightedPerfectMatching.Statistics statistics =
-            perfectMatching.getStatistics();
+        KolmogorovWeightedPerfectMatching.Statistics statistics = perfectMatching.getStatistics();
 
         assertEquals(18, matching.getWeight(), EPS);
         assertEquals(0, statistics.growNum);
@@ -298,8 +295,7 @@ public class BlossomVInitializerTest
             new KolmogorovWeightedPerfectMatching<>(graph, fractionalOptions);
         MatchingAlgorithm.Matching<Integer, DefaultWeightedEdge> matching =
             perfectMatching.getMatching();
-        KolmogorovWeightedPerfectMatching.Statistics statistics =
-            perfectMatching.getStatistics();
+        KolmogorovWeightedPerfectMatching.Statistics statistics = perfectMatching.getStatistics();
 
         assertEquals(24, matching.getWeight(), EPS);
         assertEquals(0, statistics.growNum);

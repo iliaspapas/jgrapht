@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Emilio Cruciani and Contributors.
+ * (C) Copyright 2018-2020, by Emilio Cruciani and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -19,6 +19,7 @@
 package org.jgrapht.generate;
 
 import org.jgrapht.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 
@@ -201,7 +202,7 @@ public class PlantedPartitionGraphGenerator<V, E>
         // instantiate community structure
         communities = new ArrayList<>(this.l);
         for (int i = 0; i < this.l; i++) {
-            communities.add(new LinkedHashSet<>(this.k));
+            communities.add(CollectionUtil.newLinkedHashSetWithExpectedSize(this.k));
         }
 
         // empty graph case

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2018, by Vera-Licona Research Group and Contributors.
+ * (C) Copyright 2015-2020, by Vera-Licona Research Group and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -122,7 +122,7 @@ public class AllDirectedPaths<V, E>
          */
         Map<E, Integer> edgeMinDistances = new HashMap<>();
         Map<V, Integer> vertexMinDistances = new HashMap<>();
-        Queue<V> verticesToProcess = new LinkedList<>();
+        Queue<V> verticesToProcess = new ArrayDeque<>();
 
         // Input sanity checking
         if (maxPathLength != null) {

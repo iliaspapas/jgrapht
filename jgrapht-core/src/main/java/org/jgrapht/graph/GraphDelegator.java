@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -30,7 +30,7 @@ import java.util.function.*;
  *
  * <p>
  * This graph does <i>not</i> pass the hashCode and equals operations through to the backing graph,
- * but relies on <tt>Object</tt>'s <tt>equals</tt> and <tt>hashCode</tt> methods.
+ * but relies on <code>Object</code>'s <code>equals</code> and <code>hashCode</code> methods.
  * </p>
  *
  * <p>

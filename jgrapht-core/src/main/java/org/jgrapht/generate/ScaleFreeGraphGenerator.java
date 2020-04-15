@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008-2018, by Ilya Razenshteyn and Contributors.
+ * (C) Copyright 2008-2020, by Ilya Razenshteyn and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -77,7 +77,7 @@ public class ScaleFreeGraphGenerator<V, E>
     }
 
     /**
-     * Generates scale-free network with <tt>size</tt> passed to the constructor.
+     * Generates scale-free network with <code>size</code> passed to the constructor.
      *
      * @param target receives the generated edges and vertices; if this is non-empty on entry, the
      *        result will be a disconnected graph since generated elements will not be connected to

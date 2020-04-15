@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -95,7 +95,7 @@ public class MaximumCardinalityBipartiteMatchingPerformanceTest
             Graph<Integer, DefaultEdge> graph, Set<Integer> firstPartition,
             Set<Integer> secondPartition)
         {
-            return new EdmondsMaximumCardinalityMatching<>(graph);
+            return new SparseEdmondsMaximumCardinalityMatching<>(graph);
         }
     }
 

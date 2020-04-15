@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2007-2018, by France Telecom and Contributors.
+ * (C) Copyright 2007-2020, by France Telecom and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -128,7 +128,7 @@ public class KShortestSimplePaths<V, E>
         Objects.requireNonNull(startVertex, "Start vertex cannot be null");
         Objects.requireNonNull(endVertex, "End vertex cannot be null");
         if (endVertex.equals(startVertex)) {
-            throw new IllegalArgumentException("The end vertex is the same as the start vertex!");
+            return Collections.emptyList();
         }
         if (!graph.containsVertex(startVertex)) {
             throw new IllegalArgumentException("Graph must contain the start vertex!");

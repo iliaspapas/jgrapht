@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Andre Immig and Contributors.
+ * (C) Copyright 2018-2020, by Andre Immig and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -35,7 +35,7 @@ public interface MaximumDensitySubgraphAlgorithm<V, E>
      *
      * @return the maximum density subgraph
      */
-    Graph<V,E> calculateDensest();
+    Graph<V, E> calculateDensest();
 
     /**
      * Computes density of a maximum density subgraph.
@@ -45,4 +45,3 @@ public interface MaximumDensitySubgraphAlgorithm<V, E>
     double getDensity();
 
 }
-

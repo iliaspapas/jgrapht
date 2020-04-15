@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2015-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -23,7 +23,6 @@ import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.shortestpath.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
-import org.jgrapht.graph.specifics.*;
 import org.jgrapht.util.*;
 import org.junit.*;
 import org.openjdk.jmh.annotations.*;

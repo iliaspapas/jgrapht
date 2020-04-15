@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -22,8 +22,8 @@ import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.graph.*;
 import org.jgrapht.graph.builder.*;
 import org.jgrapht.util.*;
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.PairingHeap;
+import org.jheaps.*;
+import org.jheaps.tree.*;
 
 import java.util.*;
 
@@ -151,12 +151,12 @@ public class GreedyMultiplicativeSpanner<V, E>
             spanner = GraphTypeBuilder
                 .<V, E> undirected().allowingMultipleEdges(false).allowingSelfLoops(false)
                 .edgeSupplier(graph.getEdgeSupplier()).buildGraph();
-            touchedVertices = new ArrayDeque<V>(graph.vertexSet().size());
+            touchedVertices = new ArrayDeque<>(graph.vertexSet().size());
             for (V v : graph.vertexSet()) {
                 spanner.addVertex(v);
                 touchedVertices.push(v);
             }
-            vertexDistance = new HashMap<>(graph.vertexSet().size());
+            vertexDistance = CollectionUtil.newHashMapWithExpectedSize(graph.vertexSet().size());
             queue = new ArrayDeque<>();
         }
 

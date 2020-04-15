@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2016-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -224,6 +224,10 @@ public class GraphWalk<V, E>
         @SuppressWarnings("unchecked") GraphWalk<V, E> other = (GraphWalk<V, E>) o;
         if (this.isEmpty() && other.isEmpty())
             return true;
+
+        if (this.isEmpty())
+            return false;
+
         if (!this.startVertex.equals(other.getStartVertex())
             || !this.endVertex.equals(other.getEndVertex()))
             return false;

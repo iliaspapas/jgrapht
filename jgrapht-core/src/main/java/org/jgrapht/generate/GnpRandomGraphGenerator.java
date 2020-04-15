@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,6 +18,7 @@
 package org.jgrapht.generate;
 
 import org.jgrapht.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 
@@ -133,7 +134,7 @@ public class GnpRandomGraphGenerator<V, E>
 
         // create vertices
         int previousVertexSetSize = target.vertexSet().size();
-        Map<Integer, V> vertices = new HashMap<>(n);
+        Map<Integer, V> vertices = CollectionUtil.newHashMapWithExpectedSize(n);
         for (int i = 0; i < n; i++) {
             vertices.put(i, target.addVertex());
         }

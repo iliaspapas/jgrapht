@@ -12,16 +12,16 @@ easily add us as a dependency to your project:
 
 <pre><code>&lt;groupId&gt;org.jgrapht&lt;/groupId&gt;
 &lt;artifactId&gt;jgrapht-core&lt;/artifactId&gt;
-&lt;version&gt;1.3.0&lt;/version&gt;
+&lt;version&gt;1.4.0&lt;/version&gt;
 </code></pre>
 
-(See [the wiki](https://github.com/jgrapht/jgrapht#using-via-maven) for information on how to use the latest **SNAPSHOT** build instead.)
+(There are also [instructions](https://github.com/jgrapht/jgrapht#using-via-maven) for how to use the latest **SNAPSHOT** build instead.)
 
 <br>
 
 ## Development Environment
 
-First, find out how to set up [your favorite IDE (or the command line)](https://github.com/jgrapht/jgrapht/wiki/How-to-use-JGraphT-as-a-dependency-in-your-projects) to work with JGraphT.
+First, find out how to set up [your favorite IDE (or the command line)](https://github.com/jgrapht/jgrapht/wiki/Users:-How-to-use-JGraphT-as-a-dependency-in-your-projects) to work with JGraphT.
 
 <br>
 

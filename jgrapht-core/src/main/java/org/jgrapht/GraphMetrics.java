@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -19,6 +19,7 @@ package org.jgrapht;
 
 import org.jgrapht.alg.shortestpath.*;
 import org.jgrapht.alg.util.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 import java.util.stream.*;
@@ -116,7 +117,7 @@ public abstract class GraphMetrics
         // Array storing the depth of each vertex in the search tree
         int[] depth = new int[vertices.size()];
         // Queue for BFS
-        Queue<V> queue = new LinkedList<>();
+        Queue<V> queue = new ArrayDeque<>();
 
         // Check whether the graph has self-loops
         if (graph.getType().isAllowingSelfLoops())
@@ -273,7 +274,8 @@ public abstract class GraphMetrics
          */
 
         // Fix vertex order for unique comparison of vertices
-        Map<V, Integer> vertexOrder = new HashMap<>(graph.vertexSet().size());
+        Map<V, Integer> vertexOrder =
+            CollectionUtil.newHashMapWithExpectedSize(graph.vertexSet().size());
         int k = 0;
         for (V v : graph.vertexSet()) {
             vertexOrder.put(v, k++);

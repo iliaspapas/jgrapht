@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -114,7 +114,7 @@ public class PathGrowingWeightedMatchingPerformanceTest
         @Override
         MatchingAlgorithm<Integer, DefaultEdge> createSolver(Graph<Integer, DefaultEdge> graph)
         {
-            return new EdmondsMaximumCardinalityMatching<>(graph);
+            return new SparseEdmondsMaximumCardinalityMatching<>(graph);
         }
     }
 

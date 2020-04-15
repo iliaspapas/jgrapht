@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Assaf Mizrachi and Contributors.
+ * (C) Copyright 2017-2020, by Assaf Mizrachi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -19,9 +19,8 @@ package org.jgrapht.alg.scoring;
 
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
-import org.jgrapht.util.*;
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.PairingHeap;
+import org.jheaps.*;
+import org.jheaps.tree.*;
 
 import java.util.*;
 
@@ -186,12 +185,19 @@ public class BetweennessCentrality<V, E>
                 if (distance.get(w) == Double.POSITIVE_INFINITY) {
                     queue.insert(w, d);
                     distance.put(w, d);
+                    sigma.put(w, sigma.get(v));
+                    predecessors.get(w).add(v);
                 }
                 // shortest path to w via v?
-                if (distance.get(w) >= d) {
-                    distance.put(w, d);
-                    queue.update(w, d);
+                else if (distance.get(w) == d) {
+                    // queue.update(w, d);
                     sigma.put(w, sigma.get(w) + sigma.get(v));
+                    predecessors.get(w).add(v);
+                } else if (distance.get(w) > d) {
+                    queue.update(w, d);
+                    distance.put(w, d);
+                    sigma.put(w, sigma.get(v));
+                    predecessors.get(w).clear();
                     predecessors.get(w).add(v);
                 }
             }

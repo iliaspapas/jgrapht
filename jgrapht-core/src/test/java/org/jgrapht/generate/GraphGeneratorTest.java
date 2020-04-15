@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by John V Sichi and Contributors.
+ * (C) Copyright 2003-2020, by John V Sichi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -156,6 +156,21 @@ public class GraphGeneratorTest
         assertEquals(90, completeGraph.edgeSet().size());
     }
 
+    @Test
+    public void testCompleteGraphGeneratorWithPreexistingVertices()
+    {
+        Graph<Object, DefaultEdge> completeGraph = new SimpleGraph<>(
+            SupplierUtil.OBJECT_SUPPLIER, SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+        for (int i = 0; i < 10; i++)
+            completeGraph.addVertex();
+        CompleteGraphGenerator<Object, DefaultEdge> completeGenerator =
+            new CompleteGraphGenerator<>();
+        completeGenerator.generateGraph(completeGraph);
+
+        // complete graph with 10 vertices has 10*(10-1)/2 = 45 edges
+        assertEquals(45, completeGraph.edgeSet().size());
+    }
+
     /**
      * .
      */
@@ -198,6 +213,28 @@ public class GraphGeneratorTest
             SupplierUtil.OBJECT_SUPPLIER, SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         CompleteBipartiteGraphGenerator<Object, DefaultEdge> completeBipartiteGenerator =
             new CompleteBipartiteGraphGenerator<>(10, 4);
+        completeBipartiteGenerator.generateGraph(completeBipartiteGraph);
+
+        // Complete bipartite graph with 10 and 4 vertices should have 14
+        // total vertices and 4*10=40 total edges
+        assertEquals(14, completeBipartiteGraph.vertexSet().size());
+        assertEquals(40, completeBipartiteGraph.edgeSet().size());
+    }
+
+    @Test
+    public void testCompleteBipartiteGraphGeneratorWithPreexistingVertices()
+    {
+        Graph<Object, DefaultEdge> completeBipartiteGraph = new SimpleGraph<>(
+            SupplierUtil.OBJECT_SUPPLIER, SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+        Set<Object> partitionA = new HashSet<>();
+        for (int i = 0; i < 10; i++)
+            partitionA.add(completeBipartiteGraph.addVertex());
+        Set<Object> partitionB = new HashSet<>();
+        for (int i = 0; i < 4; i++)
+            partitionB.add(completeBipartiteGraph.addVertex());
+
+        CompleteBipartiteGraphGenerator<Object, DefaultEdge> completeBipartiteGenerator =
+            new CompleteBipartiteGraphGenerator<>(partitionA, partitionB);
         completeBipartiteGenerator.generateGraph(completeBipartiteGraph);
 
         // Complete bipartite graph with 10 and 4 vertices should have 14

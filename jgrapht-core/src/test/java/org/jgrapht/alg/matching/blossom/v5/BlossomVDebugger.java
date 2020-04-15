@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,6 +17,7 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
+import org.jgrapht.util.*;
 import org.jheaps.*;
 
 import java.util.*;
@@ -24,8 +25,8 @@ import java.util.*;
 import static org.junit.Assert.fail;
 
 /**
- * This class contains auxiliary methods for testing {@link KolmogorovWeightedPerfectMatching}
- * and related classes
+ * This class contains auxiliary methods for testing {@link KolmogorovWeightedPerfectMatching} and
+ * related classes
  *
  * @author Timofey Chudakov
  */
@@ -42,7 +43,7 @@ public class BlossomVDebugger
      */
     public static <V, E> Map<V, BlossomVNode> getVertexMap(BlossomVState<V, E> state)
     {
-        Map<V, BlossomVNode> vertexMap = new HashMap<>(state.nodeNum);
+        Map<V, BlossomVNode> vertexMap = CollectionUtil.newHashMapWithExpectedSize(state.nodeNum);
         for (int i = 0; i < state.nodeNum; i++) {
             vertexMap.put(state.graphVertices.get(i), state.nodes[i]);
         }
@@ -59,7 +60,7 @@ public class BlossomVDebugger
      */
     public static <V, E> Map<E, BlossomVEdge> getEdgeMap(BlossomVState<V, E> state)
     {
-        Map<E, BlossomVEdge> edgeMap = new HashMap<>(state.edgeNum);
+        Map<E, BlossomVEdge> edgeMap = CollectionUtil.newHashMapWithExpectedSize(state.edgeNum);
         for (int i = 0; i < state.edgeNum; i++) {
             edgeMap.put(state.graphEdges.get(i), state.edges[i]);
         }

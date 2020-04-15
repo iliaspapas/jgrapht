@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2015-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,7 +18,7 @@
 package org.jgrapht.graph.specifics;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * An interface encapsulating the basic graph operations. Different implementations have different
@@ -74,15 +74,6 @@ public interface Specifics<V, E>
      * @return an edge connecting source vertex to target vertex.
      */
     E getEdge(V sourceVertex, V targetVertex);
-
-    /**
-     * Adds the specified edge to the edge containers of its source and target vertices.
-     * 
-     * @param e the edge
-     * @deprecated Use method {@link #addEdgeToTouchingVertices(Object, Object, Object)} instead.
-     */
-    @Deprecated
-    void addEdgeToTouchingVertices(E e);
 
     /**
      * Adds the specified edge to the edge containers of its source and target vertices.
@@ -174,19 +165,10 @@ public interface Specifics<V, E>
     /**
      * Removes the specified edge from the edge containers of its source and target vertices.
      *
-     * @param e the edge
-     * @deprecated Use method {@link #removeEdgeFromTouchingVertices(Object, Object, Object)} instead.
-     */
-    @Deprecated
-    void removeEdgeFromTouchingVertices(E e);
-
-    /**
-     * Removes the specified edge from the edge containers of its source and target vertices.
-     *
      * @param sourceVertex the source vertex
      * @param targetVertex the target vertex
      * @param e the edge
      */
     void removeEdgeFromTouchingVertices(V sourceVertex, V targetVertex, E e);
-    
+
 }

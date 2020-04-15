@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2007-2017, by France Telecom and Contributors.
+ * (C) Copyright 2007-2020, by France Telecom and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -20,6 +20,7 @@ package org.jgrapht.alg.connectivity;
 import org.jgrapht.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
 import org.jgrapht.util.*;
 import org.junit.*;
 
@@ -239,5 +240,41 @@ public class BiconnectivityInspectorTest
             inspector.getBlocks(7));
         assertEquals(
             new HashSet<>(Arrays.asList(blocks.get(5), blocks.get(6))), inspector.getBlocks(9));
+    }
+
+    @Test
+    public void testGithubIssueBug798()
+    {
+        Graph<Integer,
+            DefaultEdge> g = GraphTypeBuilder
+                .undirected().allowingSelfLoops(false).allowingMultipleEdges(false)
+                .edgeSupplier(SupplierUtil.DEFAULT_EDGE_SUPPLIER)
+                .vertexSupplier(SupplierUtil.createIntegerSupplier()).buildGraph();
+        g.addVertex(0);
+        g.addVertex(1);
+        g.addVertex(2);
+        g.addVertex(3);
+        g.addEdge(0, 1);
+        g.addEdge(1, 2);
+        g.addEdge(0, 2);
+        DefaultEdge e03 = g.addEdge(0, 3);
+
+        BiconnectivityInspector<Integer, DefaultEdge> bi = new BiconnectivityInspector<>(g);
+
+        assertFalse(bi.isBiconnected());
+
+        Set<Integer> cutpoints = bi.getCutpoints();
+        assertTrue(cutpoints.size() == 1);
+        assertTrue(cutpoints.contains(0));
+
+        Set<DefaultEdge> bridges = bi.getBridges();
+        assertTrue(bridges.size() == 1);
+        assertTrue(bridges.contains(e03));
+
+        assertTrue(bi.getBlocks(0).size() == 2);
+        assertTrue(bi.getBlocks(1).size() == 1);
+        assertTrue(bi.getBlocks(2).size() == 1);
+        assertTrue(bi.getBlocks(3).size() == 1);
+        assertTrue(bi.getBlocks().size() == 2);
     }
 }

@@ -4,7 +4,7 @@ Copyright Notice: The JGraphT project source code is a composite of contribution
 
 JGraphT wouldn't be the library it is today without the source contributions and suggestions made by the authors:
 
-- [Barak Naveh](http://sourceforge.net/users/barak_naveh/) (project founder)
+- [Barak Naveh](https://github.com/baraknaveh) (project founder)
 - [John V Sichi](https://github.com/jsichi) (current project administrator)
 - [Joris Kinable](https://github.com/jkinable) (JGraphtT Project Reviewer/Committer and Release Manager)
 - [Dimitrios Michail](https://github.com/d-michail) (JGraphT Project Reviewer/Committer)
@@ -129,8 +129,18 @@ JGraphT wouldn't be the library it is today without the source contributions and
 - [Semen Chudakov](https://github.com/SChudakov)
 - [Lavish Kothari](https://github.com/LavishKothari)
 - [Andre Immig](https://github.com/Aimmig)
+- [Charul Bhanawat](https://github.com/CharulBhanawat13)
+- [Benjamin Krogh](https://github.com/bkrogh)
+- [Reynaldo Gil Pons](https://github.com/gilcu3)
+- [Sean Hudson](https://github.com/shduke)
+- [Edwin Ouwehand](https://github.com/EdwinOuwehand)
+- [Amr Alhossary](https://github.com/aalhossary)
+- [Volkov Viktor](https://github.com/bingo-soft)
+- [Hannes Wellmann](https://github.com/HannesWell)
+- [Shevek](https://github.com/shevek)
+- [Ritik Goyal](https://github.com/rtkg12)
 
-(if we have missed your name on this list, please email us to get it fixed).
+(If we have missed your name on this list, please email us to get it fixed.)
 
 Other people have also helped in different ways: reporting bugs, requesting features, commenting, and by merely asking very good questions.
 

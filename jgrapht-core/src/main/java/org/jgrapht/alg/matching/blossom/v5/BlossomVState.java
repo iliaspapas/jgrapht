@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -111,7 +111,8 @@ class BlossomVState<V, E>
      */
     public BlossomVState(
         Graph<V, E> graph, BlossomVNode[] nodes, BlossomVEdge[] edges, int nodeNum, int edgeNum,
-        int treeNum, List<V> graphVertices, List<E> graphEdges, BlossomVOptions options, double minEdgeWeight)
+        int treeNum, List<V> graphVertices, List<E> graphEdges, BlossomVOptions options,
+        double minEdgeWeight)
     {
         this.graph = graph;
         this.nodes = nodes;

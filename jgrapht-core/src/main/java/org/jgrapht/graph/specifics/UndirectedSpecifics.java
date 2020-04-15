@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2015-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -23,7 +23,7 @@ import org.jgrapht.util.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * Plain implementation of UndirectedSpecifics. This implementation requires the least amount of
@@ -143,19 +143,6 @@ public class UndirectedSpecifics<V, E>
     }
 
     @Override
-    @Deprecated
-    public void addEdgeToTouchingVertices(E e)
-    {
-        V source = graph.getEdgeSource(e);
-        V target = graph.getEdgeTarget(e);
-        getEdgeContainer(source).addEdge(e);
-
-        if (!source.equals(target)) {
-            getEdgeContainer(target).addEdge(e);
-        }
-    }
-    
-    @Override
     public boolean addEdgeToTouchingVertices(V sourceVertex, V targetVertex, E e)
     {
         getEdgeContainer(sourceVertex).addEdge(e);
@@ -172,7 +159,7 @@ public class UndirectedSpecifics<V, E>
         // lookup for edge with same source and target
         UndirectedEdgeContainer<V, E> ec = getEdgeContainer(sourceVertex);
         for (E edge : ec.vertexEdges) {
-            if (isEqualsStraightOrInverted(sourceVertex, targetVertex, edge)) { 
+            if (isEqualsStraightOrInverted(sourceVertex, targetVertex, edge)) {
                 return false;
             }
         }
@@ -275,24 +262,6 @@ public class UndirectedSpecifics<V, E>
         return getEdgeContainer(vertex).getUnmodifiableVertexEdges();
     }
 
-    /**
-     * {@inheritDoc}
-     * @deprecated Use method {@link #removeEdgeFromTouchingVertices(Object, Object, Object)} instead.
-     */
-    @Override
-    @Deprecated
-    public void removeEdgeFromTouchingVertices(E e)
-    {
-        V source = graph.getEdgeSource(e);
-        V target = graph.getEdgeTarget(e);
-
-        getEdgeContainer(source).removeEdge(e);
-
-        if (!source.equals(target)) {
-            getEdgeContainer(target).removeEdge(e);
-        }
-    }
-    
     /**
      * {@inheritDoc}
      */

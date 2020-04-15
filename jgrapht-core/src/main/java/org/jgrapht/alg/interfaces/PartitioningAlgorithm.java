@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Alexandru Valeanu and Contributors.
+ * (C) Copyright 2018-2020, by Alexandru Valeanu and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -69,7 +69,7 @@ public interface PartitioningAlgorithm<V>
          * @param index index of the partition to return
          * @return the index-th partition
          * @throws IndexOutOfBoundsException if the index is out of range
-         *         (<tt>index &lt; 0 || index &gt;= getNumberPartitions()</tt>)
+         *         (<code>index &lt; 0 || index &gt;= getNumberPartitions()</code>)
          */
         Set<V> getPartition(int index);
 

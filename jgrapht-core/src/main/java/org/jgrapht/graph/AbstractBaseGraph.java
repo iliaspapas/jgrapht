@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -116,14 +116,12 @@ public abstract class AbstractBaseGraph<V, E>
 
         this.graphSpecificsStrategy =
             Objects.requireNonNull(graphSpecificsStrategy, GRAPH_SPECIFICS_STRATEGY_REQUIRED);
-        this.specifics = Objects
-            .requireNonNull(
-                graphSpecificsStrategy.getSpecificsFactory().apply(this, type),
-                GRAPH_SPECIFICS_MUST_NOT_BE_NULL);
-        this.intrusiveEdgesSpecifics = Objects
-            .requireNonNull(
-                graphSpecificsStrategy.getIntrusiveEdgesSpecificsFactory().apply(type),
-                GRAPH_SPECIFICS_MUST_NOT_BE_NULL);
+        this.specifics = Objects.requireNonNull(
+            graphSpecificsStrategy.getSpecificsFactory().apply(this, type),
+            GRAPH_SPECIFICS_MUST_NOT_BE_NULL);
+        this.intrusiveEdgesSpecifics = Objects.requireNonNull(
+            graphSpecificsStrategy.getIntrusiveEdgesSpecificsFactory().apply(type),
+            GRAPH_SPECIFICS_MUST_NOT_BE_NULL);
     }
 
     /**
@@ -258,11 +256,22 @@ public abstract class AbstractBaseGraph<V, E>
         }
 
         if (!type.isAllowingMultipleEdges()) {
-            return specifics.addEdgeToTouchingVerticesIfAbsent(sourceVertex, targetVertex, e)
-                && intrusiveEdgesSpecifics.add(e, sourceVertex, targetVertex);
+            // check that second operation will succeed
+            if (intrusiveEdgesSpecifics.containsEdge(e)) { 
+                return false;
+            }
+            if (!specifics.addEdgeToTouchingVerticesIfAbsent(sourceVertex, targetVertex, e)) { 
+                return false;
+            }
+            // cannot fail due to first check
+            intrusiveEdgesSpecifics.add(e, sourceVertex, targetVertex);
+            return true;
         } else {
-            return specifics.addEdgeToTouchingVertices(sourceVertex, targetVertex, e)
-                && intrusiveEdgesSpecifics.add(e, sourceVertex, targetVertex);
+            if (intrusiveEdgesSpecifics.add(e, sourceVertex, targetVertex)) {
+                specifics.addEdgeToTouchingVertices(sourceVertex, targetVertex, e);
+                return true;
+            }
+            return false;
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Emilio Cruciani and Contributors.
+ * (C) Copyright 2018-2020, by Emilio Cruciani and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,6 +18,7 @@
 package org.jgrapht.generate;
 
 import org.jgrapht.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 
@@ -190,7 +191,7 @@ public class RandomRegularGraphGenerator<V, E>
         }
 
         // set of final edges to add to target graph
-        Set<Map.Entry<Integer, Integer>> edges = new HashSet<>(n * d);
+        Set<Map.Entry<Integer, Integer>> edges = CollectionUtil.newHashSetWithExpectedSize(n * d);
         do {
             List<Integer> stubs = new ArrayList<>(n * d);
             for (int i = 0; i < n * d; i++) {

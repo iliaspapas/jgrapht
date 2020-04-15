@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,13 +18,13 @@
 package org.jgrapht.traverse;
 
 import org.jgrapht.*;
-import org.jgrapht.event.*;
 import org.jgrapht.graph.*;
 import org.junit.*;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the {@link LexBreadthFirstIterator}
@@ -48,13 +48,14 @@ public class LexBreadthFirstIteratorTest
         Graphs.addEdgeWithVertices(graph, 3, 4);
         LexBreadthFirstIterator<Integer, DefaultEdge> iterator =
             new LexBreadthFirstIterator<>(graph);
-        MyTraversalListener<Integer, DefaultEdge> listener = new MyTraversalListener<>(graph);
+        VertexTrackingTraversalListener<Integer, DefaultEdge> listener =
+            new VertexTrackingTraversalListener<>(graph);
         iterator.addTraversalListener(listener);
         for (int i = 0; i < 4; i++) {
             iterator.next();
         }
-        assertEquals(graph.vertexSet(), listener.verticesTraversed);
-        assertEquals(graph.vertexSet(), listener.verticesFinished);
+        listener.checkAllVerticesTraversed();
+        listener.checkAllVerticesFinished();
     }
 
     /**
@@ -197,36 +198,5 @@ public class LexBreadthFirstIteratorTest
         assertTrue(graph.vertexSet().equals(returned));
 
         assertFalse(iterator.hasNext());
-    }
-
-    /**
-     * TraversalListener for testing basic events invariants.
-     */
-    static class MyTraversalListener<V, E>
-        extends
-        TraversalListenerAdapter<V, E>
-    {
-        Set<V> verticesTraversed = new HashSet<>();
-        Set<V> verticesFinished = new HashSet<>();
-        Graph<V, E> graph;
-
-        MyTraversalListener(Graph<V, E> graph)
-        {
-            this.graph = graph;
-        }
-
-        @Override
-        public void vertexTraversed(VertexTraversalEvent<V> e)
-        {
-            assertTrue(graph.containsVertex(e.getVertex()));
-            verticesTraversed.add(e.getVertex());
-        }
-
-        @Override
-        public void vertexFinished(VertexTraversalEvent<V> e)
-        {
-            assertTrue(graph.containsVertex(e.getVertex()));
-            verticesFinished.add(e.getVertex());
-        }
     }
 }

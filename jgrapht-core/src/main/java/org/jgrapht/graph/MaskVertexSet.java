@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2007-2018, by France Telecom and Contributors.
+ * (C) Copyright 2007-2020, by France Telecom and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -75,4 +75,12 @@ class MaskVertexSet<V>
         return (int) vertexSet.stream().filter(mask.negate()).count();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEmpty()
+    {
+        return !iterator().hasNext();
+    }
 }

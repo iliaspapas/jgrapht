@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2018-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -35,7 +35,7 @@ public interface FlowAlgorithm<V, E>
      *
      * @return flow
      */
-    default Flow getFlow()
+    default Flow<E> getFlow()
     {
         return new FlowImpl<>(this.getFlowMap());
     }

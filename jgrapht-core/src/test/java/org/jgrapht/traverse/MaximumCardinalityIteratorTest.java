@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -23,7 +23,8 @@ import org.junit.*;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the {@link MaximumCardinalityIterator}
@@ -44,16 +45,16 @@ public class MaximumCardinalityIteratorTest
         Graphs.addEdgeWithVertices(graph, "b", "c");
         Graphs.addEdgeWithVertices(graph, "c", "a");
         Graphs.addEdgeWithVertices(graph, "b", "d");
-        LexBreadthFirstIteratorTest.MyTraversalListener<String, DefaultEdge> listener =
-            new LexBreadthFirstIteratorTest.MyTraversalListener<>(graph);
+        VertexTrackingTraversalListener<String, DefaultEdge> listener =
+            new VertexTrackingTraversalListener<>(graph);
         MaximumCardinalityIterator<String, DefaultEdge> iterator =
             new MaximumCardinalityIterator<>(graph);
         iterator.addTraversalListener(listener);
         for (int i = 0; i < 4; i++) {
             iterator.next();
         }
-        assertEquals(graph.vertexSet(), listener.verticesTraversed);
-        assertEquals(graph.vertexSet(), listener.verticesFinished);
+        listener.checkAllVerticesTraversed();
+        listener.checkAllVerticesFinished();
     }
 
     /**

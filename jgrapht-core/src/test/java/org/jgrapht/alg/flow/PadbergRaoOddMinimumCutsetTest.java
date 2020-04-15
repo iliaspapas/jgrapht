@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2016-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -216,7 +216,8 @@ public class PadbergRaoOddMinimumCutsetTest
                 // and
                 // |V|-1
 
-                Set<Integer> oddVertices = new LinkedHashSet<>(nrOfOddVertices);
+                Set<Integer> oddVertices =
+                    CollectionUtil.newLinkedHashSetWithExpectedSize(nrOfOddVertices);
                 List<Integer> allVertices = new ArrayList<>(randomGraph.vertexSet());
                 for (int k = 0; k < nrOfOddVertices; k++) {
                     oddVertices.add(allVertices.remove(rand.nextInt(allVertices.size())));

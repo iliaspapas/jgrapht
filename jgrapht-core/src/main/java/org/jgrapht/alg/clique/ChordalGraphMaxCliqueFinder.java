@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -22,6 +22,7 @@ import org.jgrapht.alg.color.*;
 import org.jgrapht.alg.cycle.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.traverse.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 
@@ -124,7 +125,8 @@ public class ChordalGraphMaxCliqueFinder<V, E>
      */
     private Map<V, Integer> getVertexInOrder(List<V> vertexOrder)
     {
-        Map<V, Integer> vertexInOrder = new HashMap<>(vertexOrder.size());
+        Map<V, Integer> vertexInOrder =
+            CollectionUtil.newHashMapWithExpectedSize(vertexOrder.size());
         int i = 0;
         for (V vertex : vertexOrder) {
             vertexInOrder.put(vertex, i++);
