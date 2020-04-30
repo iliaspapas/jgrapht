@@ -1,3 +1,4 @@
+package org.jgrapht.alg.drawing;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -12,16 +13,16 @@ import org.jgrapht.alg.drawing.model.Box2D;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.alg.shortestpath.*;
 
-public class ALGdrawing<V, E>
-        implements LayoutAlgorithm2D<V, E> {
-    /*This algorithm is based on the algorithm kamada and kawai build for graph drawing.
+/*This algorithm is based on the algorithm kamada and kawai build for graph drawing.
     
     this algorithm calculate the sortest path between edges considering the vertexes that united them that 
     that they are like springes .When the edges are too close to each other there is a repulsive force that tends to bring 
     the spring at the original state .If they are too far apart there is a force that tends to bring edges back together 
     
-    author : Elias Papadakis student of Harokopeio Univerity
-    */
+    @author : Elias Papadakis student of Harokopeio Univerity
+ */
+public class KKLayoutalgorithm<V, E>
+        implements LayoutAlgorithm2D<V, E> {
 
     /**
      * Default number of iterations
@@ -40,14 +41,14 @@ public class ALGdrawing<V, E>
     protected double normalizationFactor;
     protected int iterations;
     protected double[] x;
-    protected double []y;
+    protected double[] y;
     protected BiFunction<LayoutModel2D<V>, Integer, TemperatureModel> temperatureModelSupplier;
 
     /**
      * Create a new layout algorithm
      */
-    public ALGdrawing(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel,double K,double epsilon) {
-        this(DEFAULT_ITERATIONS, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel,K,epsilon);
+    public KKLayoutalgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+        this(DEFAULT_ITERATIONS, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
     /**
@@ -55,8 +56,8 @@ public class ALGdrawing<V, E>
      *
      * @param iterations number of iterations
      */
-    public ALGdrawing(int iterations, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel,double K,double epsilon) {
-        this(iterations, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel,K,epsilon);
+    public KKLayoutalgorithm(int iterations, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+        this(iterations, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
     /**
@@ -65,8 +66,8 @@ public class ALGdrawing<V, E>
      * @param iterations number of iterations
      * @param normalizationFactor normalization factor for the optimal distance
      */
-    public ALGdrawing(int iterations, double normalizationFactor, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel,double K,double epsilon) {
-        this(iterations, normalizationFactor, new Random(), sgraph, mlayoutmodel,K,epsilon);
+    public KKLayoutalgorithm(int iterations, double normalizationFactor, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+        this(iterations, normalizationFactor, new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
     /**
@@ -76,9 +77,9 @@ public class ALGdrawing<V, E>
      * @param normalizationFactor normalization factor for the optimal distance
      * @param rng the random number generator
      */
-    public ALGdrawing(int iterations, double normalizationFactor, Random rng, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel,double K,double epsilon) {
-       this.K=K;
-       this.epsilon=epsilon;
+    public KKLayoutalgorithm(int iterations, double normalizationFactor, Random rng, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+        this.K = K;
+        this.epsilon = epsilon;
         this.rng = Objects.requireNonNull(rng);
         this.iterations = iterations;
         this.normalizationFactor = normalizationFactor;
@@ -101,89 +102,85 @@ public class ALGdrawing<V, E>
      * supplier
      * @param rng the random number generators
      */
-    public ALGdrawing(
+    public KKLayoutalgorithm(
             int iterations, double normalizationFactor,
             BiFunction<LayoutModel2D<V>, Integer, TemperatureModel> temperatureModelSupplier,
-            Random rng,double K,double epsilon) {
+            Random rng, double K, double epsilon) {
         this.rng = Objects.requireNonNull(rng);
         this.iterations = iterations;
         this.normalizationFactor = normalizationFactor;
         this.temperatureModelSupplier = Objects.requireNonNull(temperatureModelSupplier);
-        this.K=K;
-        this.epsilon=epsilon;
+        this.K = K;
+        this.epsilon = epsilon;
     }
 
     public void executealgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel) {
         layout(sgraph, mlayoutmodel);
     }
-    public void CalculateDxDy(int n,double [][]k,double [][]l,int maxm,double []E_xm,double []E_ym,double []D){
-         double E2_xm =0;
-               double E2_ym = 0;
-               double E2_yx = 0;
-               double E2_xy = 0;
 
-                for (int i = 0; i < n; i++) {
-                    if (i != maxm) {
-                        E2_xm+= k[maxm][i] * ((1 - l[maxm][i] * (y[maxm] - y[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
-                        E2_ym+= k[maxm][i] * ((1 - l[maxm][i] * (x[maxm] - x[i]) * (x[maxm] - x[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
-                        E2_yx+= k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
-                        E2_xy+= k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+    public void calculateDxDy(int n, double[][] k, double[][] l, int maxm, double[] E_xm, double[] E_ym, double[] D) {
+        double E2_xm = 0;
+        double E2_ym = 0;
+        double E2_yx = 0;
+        double E2_xy = 0;
 
-                    }
-                }    
-                    D[0] = -((E_xm[maxm] - E2_xy * ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm))) / E2_xm);
-                    D[1] = ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm));
+        for (int i = 0; i < n; i++) {
+            if (i != maxm) {
+                E2_xm += k[maxm][i] * ((1 - l[maxm][i] * (y[maxm] - y[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+                E2_ym += k[maxm][i] * ((1 - l[maxm][i] * (x[maxm] - x[i]) * (x[maxm] - x[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+                E2_yx += k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+                E2_xy += k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+
+            }
+        }
+        D[0] = -((E_xm[maxm] - E2_xy * ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm))) / E2_xm);
+        D[1] = ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm));
     }
-    public void CalculateL(int n,double [][]l,double L0,double [][]d)
-    {
-        double maxpathweight=0;
-         for(int i=0;i<n;i++)
-         {
-             for(int j=0;j<n;j++)
-             {
-                 if(d[i][j]>maxpathweight)
-                 {
-                     maxpathweight=d[i][j];
-                 }
-             }
-         }
-         L=L0/maxpathweight;
+
+    public void calculateL(int n, double[][] l, double L0, double[][] d) {
+        double maxpathweight = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (d[i][j] > maxpathweight) {
+                    maxpathweight = d[i][j];
+                }
+            }
+        }
+        L = L0 / maxpathweight;
         for (int i = 0; i < l.length; i++) {
             for (int j = 0; j < l[0].length; j++) {
                 l[i][j] = L * d[i][j];
             }
         }
     }
-    public void CalculateExm_Eym(double []E_xm,double []E_ym,double [][]l,double [][]k,int n,int m)
-    {
+
+    public void calculateExm_Eym(double[] E_xm, double[] E_ym, double[][] l, double[][] k, int n, int m) {
         for (int i = 0; i < n; i++) {
-                    if (i != m) {
-                        E_xm[m] = E_xm[m] + (k[m][i] * ((x[m] - x[i]) - (l[m][i] * (x[m] - x[i]) / Math.sqrt((x[m] - x[i]) * (x[m] - x[i]) + (y[m] - y[i]) * (y[m] - y[i])))));
-                        E_ym[m] = E_ym[m] + (k[m][i] * ((y[m] - y[i]) - (l[m][i] * (y[m] - y[i]) / Math.sqrt((x[m] - x[i]) * (x[m] - x[i]) + (y[m] - y[i]) * (y[m] - y[i])))));
-                    }
-                }
+            if (i != m) {
+                E_xm[m] = E_xm[m] + (k[m][i] * ((x[m] - x[i]) - (l[m][i] * (x[m] - x[i]) / Math.sqrt((x[m] - x[i]) * (x[m] - x[i]) + (y[m] - y[i]) * (y[m] - y[i])))));
+                E_ym[m] = E_ym[m] + (k[m][i] * ((y[m] - y[i]) - (l[m][i] * (y[m] - y[i]) / Math.sqrt((x[m] - x[i]) * (x[m] - x[i]) + (y[m] - y[i]) * (y[m] - y[i])))));
+            }
+        }
     }
+
     @Override
     public void layout(Graph<V, E> graph, LayoutModel2D<V> model) {
-        
+
         // read area
         Box2D drawableArea = model.getDrawableArea();
         double minX = drawableArea.getMinX();
         double minY = drawableArea.getMinY();
         System.out.println("drawable " + minX + "," + minY);
 
-     
+        // assign random initial positions
+        MapLayoutModel2D<V> randomModel
+                = new MapLayoutModel2D(drawableArea);
+        new RandomLayoutAlgorithm2D<V, E>(rng).layout(graph, randomModel);
+        for (V v : graph.vertexSet()) {
+            System.out.println("v" + v);
 
-            // assign random initial positions
-            MapLayoutModel2D<V> randomModel
-                    = new MapLayoutModel2D(drawableArea);
-            new RandomLayoutAlgorithm2D<V, E>(rng).layout(graph, randomModel);
-            for (V v : graph.vertexSet()) {
-                System.out.println("v" + v);
-
-                model.put(v, randomModel.get(v));
-            }
-       
+            model.put(v, randomModel.get(v));
+        }
 
         // calculate optimal distance between vertices
         double width = drawableArea.getWidth();
@@ -200,36 +197,39 @@ public class ALGdrawing<V, E>
         }
         int i, j;
         //veltisth apostash sto graph metaksy korifwn--L 
-       // L = normalizationFactor * Math.sqrt(area / n);
-       FloydWarshallShortestPaths spath=new FloydWarshallShortestPaths(graph);
-        double [][] d = new double[n][n];
-        i=0;
-           for (V source : graph.vertexSet()) {
-               j=0;
+        // L = normalizationFactor * Math.sqrt(area / n);
+        FloydWarshallShortestPaths spath = new FloydWarshallShortestPaths(graph);
+        double[][] d = new double[n][n];
+        i = 0;
+        for (V source : graph.vertexSet()) {
+            j = 0;
             for (V sink : graph.vertexSet()) {
-                d[i][j]=spath.getPathWeight(source,sink);
+                d[i][j] = spath.getPathWeight(source, sink);
                 j++;
             }
             i++;
         }
-         double L0=0;
-         if(width>height) L0=width; //L0=max(width,height)
-         else L0=height;
-         //L=L0/maxpath
-         
-         double[][] l = new double[d.length][d[0].length];
+        double L0 = 0;
+        if (width > height) {
+            L0 = width; //L0=max(width,height)
+        } else {
+            L0 = height;
+        }
+        //L=L0/maxpath
+
+        double[][] l = new double[d.length][d[0].length];
         double[][] k = new double[l.length][l[0].length];
-        CalculateL(n,l,L0,d);
-        i=0;
-           for (V source : graph.vertexSet()) {
-               j=0;
+        calculateL(n, l, L0, d);
+        i = 0;
+        for (V source : graph.vertexSet()) {
+            j = 0;
             for (V sink : graph.vertexSet()) {
-                k[i][j]=K/spath.getPathWeight(source,sink);
+                k[i][j] = K / spath.getPathWeight(source, sink);
                 j++;
             }
             i++;
         }
-        
+
         i = 0;
         j = 0;
         x = new double[n];
@@ -240,11 +240,11 @@ public class ALGdrawing<V, E>
             y[j++] = (double) vPos.getY();
         }
 
-        double []E_xm = new double[n];
-        double []E_ym = new double[n];
-       
+        double[] E_xm = new double[n];
+        double[] E_ym = new double[n];
+
         double Dm, max_Dm = 0;
-       
+
         while (true) {
             max_Dm = 0;
             int maxm = 0;
@@ -252,8 +252,8 @@ public class ALGdrawing<V, E>
             for (int m = 0; m < n; m++) {
                 E_xm[m] = 0;
                 E_ym[m] = 0;
-                CalculateExm_Eym(E_xm,E_ym,l,k,n,m);
-   
+                calculateExm_Eym(E_xm, E_ym, l, k, n, m);
+
                 Dm = Math.sqrt(E_xm[m] * E_xm[m] + E_ym[m] * E_ym[m]);
                 if (Dm > max_Dm) {
                     max_Dm = Dm;
@@ -264,33 +264,33 @@ public class ALGdrawing<V, E>
             while (max_Dm > epsilon) {
                 double Dy = 0.0;
                 double Dx = 0.0;
-                double []D=new double[2];
-              CalculateDxDy(n,k,l,maxm,E_xm,E_ym,D);
-              Dx=D[0];
-              Dy=D[1];
-              x[maxm] = x[maxm] + Dx;
-              y[maxm] = y[maxm] + Dy;
-                
+                double[] D = new double[2];
+                calculateDxDy(n, k, l, maxm, E_xm, E_ym, D);
+                Dx = D[0];
+                Dy = D[1];
+                x[maxm] = x[maxm] + Dx;
+                y[maxm] = y[maxm] + Dy;
+
                 E_xm[maxm] = 0;
                 E_ym[maxm] = 0;
-                CalculateExm_Eym(E_xm,E_ym,l,k,n,maxm);
+                calculateExm_Eym(E_xm, E_ym, l, k, n, maxm);
                 Dm = Math.sqrt(E_xm[maxm] * E_xm[maxm] + E_ym[maxm] * E_ym[maxm]);
                 max_Dm = Dm;
 
             }
-           
-            if(max_Dm<=epsilon) break;
+
+            if (max_Dm <= epsilon) {
+                break;
+            }
+        }
+        i = 0;
+        for (V v : graph.vertexSet()) {
+            Point2D vPos = new Point2D(x[i], y[i]);
+            model.put(v, vPos);
+            i++;
         }
 
-        
     }
-    public double[] getX() { return x;}
-    public double[] getY() { return y;}
-    
-
-    
-   
-
 
     /**
      * A general interface for a temperature model.
@@ -343,5 +343,4 @@ public class ALGdrawing<V, E>
 
     }
 
-   
 }
