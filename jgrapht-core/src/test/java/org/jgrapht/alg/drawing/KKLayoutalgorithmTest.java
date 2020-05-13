@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test {@link KKLayoutalgorithm}
  * @author : Elias Papadakis 
+ * @original: Dimitris Michail
  */
 public class KKLayoutAlgorithmTest {
 
