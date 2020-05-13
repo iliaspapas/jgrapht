@@ -1,90 +1,182 @@
+
+
 package org.jgrapht.alg.drawing;
-import org.jgrapht.*;
-import java.awt.BorderLayout;
-import org.jgrapht.Graph;
-import java.util.ArrayList;
+
+
+
+
+
 import java.util.Map;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+
 import org.jgrapht.alg.drawing.model.Point2D;
-import org.jgrapht.alg.drawing.model.LayoutModel2D;
+
 import org.jgrapht.alg.drawing.model.MapLayoutModel2D;
-import org.jgrapht.alg.drawing.model.Points;
+
 import org.jgrapht.alg.drawing.model.Box2D;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.util.SupplierUtil;
-import org.jgrapht.util.VertexToIntegerMapping;
+
+import static org.junit.Assert.assertTrue;
 
 /**
- *
- * @author : Elias Papadakis student of Harokopeio Univerity
+ * Test {@link KKLayoutalgorithm}
+ * @author : Elias Papadakis 
  */
-public class KKLayoutalgorithmTest {
+public class KKLayoutAlgorithmTest {
 
-    public  void test() {
+    public void testA() {
         Box2D Db = new Box2D(500, 400);
         MapLayoutModel2D<Integer> mlayoutmodel = new MapLayoutModel2D<Integer>(Db);
         SimpleDirectedGraph<Integer, DefaultEdge> sgraph = new SimpleDirectedGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
-
-        // Scanner input=new Scanner(System.in);
-        ArrayList<String> vertices = new ArrayList<String>();
-        /*System.out.println("Enter vertex name or quit to exit:");
-    String korifi=input.nextLine();
-    while(!korifi.equals("quit"))
-    {
-        vertices.add(korifi);
-        System.out.println("Enter vertex name or quit to exit:");
-        korifi=input.nextLine();
-    }*/
-        vertices.add("a");
-        vertices.add("b");
-        vertices.add("d");
-        vertices.add("e");
-        // input.close();
-        VertexToIntegerMapping<String> vertexmap = new VertexToIntegerMapping<String>(vertices);
-        Map<String, Integer> vmap = vertexmap.getVertexMap();
-        for (String s : vmap.keySet()) {
-            System.out.println(s + "," + vmap.get(s));
-            sgraph.addVertex(vmap.get(s));
-        }
-        String source = "a", target = "b";
-        sgraph.addEdge(vmap.get(source), vmap.get(target));
-        source = "a";
-        target = "d";
-        sgraph.addEdge(vmap.get(source), vmap.get(target));
-        source = "b";
-        target = "d";
-        sgraph.addEdge(vmap.get(source), vmap.get(target));
-        source = "a";
-        target = "e";
-        sgraph.addEdge(vmap.get(source), vmap.get(target));
-        source = "b";
-        target = "e";
-        sgraph.addEdge(vmap.get(source), vmap.get(target));
+        sgraph.addVertex(1);
+        sgraph.addVertex(2);
+        sgraph.addVertex(3);
+        sgraph.addVertex(4);
+        sgraph.addVertex(5);
+        sgraph.addVertex(6);
+        sgraph.addEdge(1,2);
+        sgraph.addEdge(1,5);
+        sgraph.addEdge(2,5);
+        sgraph.addEdge(2,4);
+        sgraph.addEdge(3,4);
+        sgraph.addEdge(3,6);
+        sgraph.addEdge(4,6);
         KKLayoutalgorithm<Integer, DefaultEdge> alg34 = new KKLayoutalgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
-        JPanel p = new JPanel(new BorderLayout());
-        JFrame frame = new JFrame();
-        Box2D drawableArea = mlayoutmodel.getDrawableArea();
-        double width = drawableArea.getWidth();
-        double height = drawableArea.getHeight();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize((int) width, (int) height);
-        int n = sgraph.vertexSet().size();
-        double[] x = new double[n];
-        double[] y = new double[n];
-        int i = 0;
+        Map<Integer, Point2D> result = mlayoutmodel.collect();
+        
+        assertTrue(result.get(1).getX() > result.get(2).getX());
+        assertTrue(result.get(1).getY() < result.get(2).getY());
 
-        for (Integer v : sgraph.vertexSet()) {
-            Point2D vPos = mlayoutmodel.get(v);
-            x[i] = (double) vPos.getX();
-            y[i] = (double) vPos.getY();
-            i++;
-        }
+        assertTrue(result.get(1).getX() > result.get(5).getX());
+        assertTrue(result.get(1).getY() > result.get(5).getY());
 
-        frame.getContentPane().add(new DrawingLine(x, y, sgraph));
-        frame.setVisible(true);
+        assertTrue(result.get(2).getX() > result.get(5).getX());
+        assertTrue(result.get(2).getY() > result.get(5).getY());
 
+        assertTrue(result.get(2).getX() > result.get(4).getX());
+        assertTrue(result.get(2).getY() < result.get(4).getY());
+
+        assertTrue(result.get(3).getX() > result.get(4).getX());
+        assertTrue(result.get(3).getY() > result.get(4).getY());
+        
+        assertTrue(result.get(3).getX() < result.get(6).getX());
+        assertTrue(result.get(3).getY() > result.get(6).getY());
+
+        assertTrue(result.get(4).getX() < result.get(6).getX());
+        assertTrue(result.get(4).getY() > result.get(6).getY());
+
+        
     }
 
+
+
+
+
+    public void testB() {
+        Box2D Db = new Box2D(500, 400);
+        MapLayoutModel2D<Integer> mlayoutmodel = new MapLayoutModel2D<Integer>(Db);
+        SimpleDirectedGraph<Integer, DefaultEdge> sgraph = new SimpleDirectedGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+        sgraph.addVertex(1);
+        sgraph.addVertex(2);
+        sgraph.addVertex(3);
+        sgraph.addVertex(4);
+        sgraph.addVertex(5);
+        sgraph.addVertex(6);
+        sgraph.addVertex(7);
+        sgraph.addVertex(8);
+        sgraph.addEdge(1,2);
+        sgraph.addEdge(1,4);
+        sgraph.addEdge(1,5);
+        sgraph.addEdge(2,6);
+        sgraph.addEdge(2,3);
+        sgraph.addEdge(3,4);
+        sgraph.addEdge(3,7);
+        sgraph.addEdge(4,8);
+        sgraph.addEdge(5,8);
+        sgraph.addEdge(5,6);
+        sgraph.addEdge(6,7);
+        sgraph.addEdge(7,8);
+        KKLayoutalgorithm<Integer, DefaultEdge> alg34 = new KKLayoutalgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
+        Map<Integer, Point2D> result = mlayoutmodel.collect();
+        
+        assertTrue(result.get(1).getX() > result.get(2).getX());
+        assertTrue(result.get(1).getY() < result.get(2).getY());
+
+        assertTrue(result.get(1).getX() > result.get(5).getX());
+        assertTrue(result.get(1).getY() > result.get(5).getY());
+
+        assertTrue(result.get(2).getX() > result.get(5).getX());
+        assertTrue(result.get(2).getY() > result.get(5).getY());
+
+        assertTrue(result.get(2).getX() > result.get(4).getX());
+        assertTrue(result.get(2).getY() < result.get(4).getY());
+
+        assertTrue(result.get(3).getX() > result.get(4).getX());
+        assertTrue(result.get(3).getY() > result.get(4).getY());
+        
+        assertTrue(result.get(3).getX() < result.get(6).getX());
+        assertTrue(result.get(3).getY() > result.get(6).getY());
+
+        assertTrue(result.get(4).getX() < result.get(6).getX());
+        assertTrue(result.get(4).getY() > result.get(6).getY());
+
+        
+    }
+    public void testC() {
+        Box2D Db = new Box2D(500, 400);
+        MapLayoutModel2D<Integer> mlayoutmodel = new MapLayoutModel2D<Integer>(Db);
+        SimpleDirectedGraph<Integer, DefaultEdge> sgraph = new SimpleDirectedGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+        sgraph.addVertex(1);
+        sgraph.addVertex(2);
+        sgraph.addVertex(3);
+        sgraph.addVertex(4);
+        sgraph.addVertex(5);
+        sgraph.addVertex(6);
+        sgraph.addVertex(7);
+        sgraph.addVertex(8);
+        sgraph.addVertex(9);
+        sgraph.addVertex(10);
+        sgraph.addEdge(1,2);
+        sgraph.addEdge(1,6);
+        sgraph.addEdge(1,5);
+        sgraph.addEdge(2,3);
+        sgraph.addEdge(2,7);
+        sgraph.addEdge(3,9);
+        sgraph.addEdge(3,10);
+        sgraph.addEdge(3,4);
+        sgraph.addEdge(4,5);
+        sgraph.addEdge(4,8);
+        sgraph.addEdge(5,8);
+        sgraph.addEdge(6,7);
+        sgraph.addEdge(9,10);
+        KKLayoutalgorithm<Integer, DefaultEdge> alg34 = new KKLayoutalgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
+        Map<Integer, Point2D> result = mlayoutmodel.collect();
+        
+        assertTrue(result.get(1).getX() > result.get(2).getX());
+        assertTrue(result.get(1).getY() < result.get(2).getY());
+
+        assertTrue(result.get(1).getX() > result.get(5).getX());
+        assertTrue(result.get(1).getY() > result.get(5).getY());
+
+        assertTrue(result.get(2).getX() > result.get(5).getX());
+        assertTrue(result.get(2).getY() > result.get(5).getY());
+
+        assertTrue(result.get(2).getX() > result.get(4).getX());
+        assertTrue(result.get(2).getY() < result.get(4).getY());
+
+        assertTrue(result.get(3).getX() > result.get(4).getX());
+        assertTrue(result.get(3).getY() > result.get(4).getY());
+        
+        assertTrue(result.get(3).getX() < result.get(6).getX());
+        assertTrue(result.get(3).getY() > result.get(6).getY());
+
+        assertTrue(result.get(4).getX() < result.get(6).getX());
+        assertTrue(result.get(4).getY() > result.get(6).getY());
+
+        
+    }
 }
+
+

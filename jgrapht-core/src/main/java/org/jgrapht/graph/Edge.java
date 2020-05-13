@@ -1,4 +1,5 @@
 package org.jgrapht.graph;
+
 import org.jgrapht.graph.DefaultEdge;
 
 /*
@@ -6,21 +7,23 @@ import org.jgrapht.graph.DefaultEdge;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Admin
  */
-public class Edge <V> extends DefaultEdge{
+public class Edge<V> extends DefaultEdge {
+
     protected V source;
     protected V destination;
-     protected int weight;
-    public Edge(V s,V d){
-        source=s;
-        destination=d;
-        weight=1;
+    protected int weight;
+
+    public Edge(V s, V d) {
+        source = s;
+        destination = d;
+        weight = 1;
     }
-    public V getsource(){
+
+    public V getsource() {
         return source;
     }
 
@@ -35,7 +38,5 @@ public class Edge <V> extends DefaultEdge{
     public void setWeight(int weight) {
         this.weight = weight;
     }
-   
-    
-    
+
 }

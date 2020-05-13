@@ -1,25 +1,30 @@
 package org.jgrapht.alg.drawing;
+
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
 import org.jgrapht.Graph;
-import org.jgrapht.alg.drawing.LayoutAlgorithm2D;
-import org.jgrapht.alg.drawing.RandomLayoutAlgorithm2D;
+
 import org.jgrapht.alg.drawing.model.LayoutModel2D;
 import org.jgrapht.alg.drawing.model.MapLayoutModel2D;
 import org.jgrapht.alg.drawing.model.Point2D;
-import org.jgrapht.alg.drawing.model.Points;
+
 import org.jgrapht.alg.drawing.model.Box2D;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.alg.shortestpath.*;
+import org.jgrapht.alg.util.Pair;
 
 /*This algorithm is based on the algorithm kamada and kawai build for graph drawing.
     
-    this algorithm calculate the sortest path between edges considering the vertexes that united them that 
-    that they are like springes .When the edges are too close to each other there is a repulsive force that tends to bring 
-    the spring at the original state .If they are too far apart there is a force that tends to bring edges back together 
+    This is an algoithm which successfuly drawes undirected graphs.The basic idea of the algorithm 
+    is that we consider the desirable geometric distance between two vertices in the drawing 
+    as the graph theoretic distance between them in the corresponding graph . This algorithm
+    consideres the edges between two vertices as springes. So the algorithm drawes a graph 
+    which is the optimal layout of vertices as the state in which the total spring energy 
+    of the system is minimal
     
-    @author : Elias Papadakis student of Harokopeio Univerity
+    
+    @author : Elias Papadakis 
  */
 public class KKLayoutalgorithm<V, E>
         implements LayoutAlgorithm2D<V, E> {
@@ -114,16 +119,16 @@ public class KKLayoutalgorithm<V, E>
         this.epsilon = epsilon;
     }
 
-    public void executealgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel) {
+    private void executealgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel) {
         layout(sgraph, mlayoutmodel);
     }
 
-    public void calculateDxDy(int n, double[][] k, double[][] l, int maxm, double[] E_xm, double[] E_ym, double[] D) {
+    private Pair<Double,Double> calculateDxDy(int n, double[][] k, double[][] l, int maxm, double[] E_xm, double[] E_ym) {
         double E2_xm = 0;
         double E2_ym = 0;
         double E2_yx = 0;
         double E2_xy = 0;
-
+        double Dx,Dy;
         for (int i = 0; i < n; i++) {
             if (i != maxm) {
                 E2_xm += k[maxm][i] * ((1 - l[maxm][i] * (y[maxm] - y[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
@@ -133,11 +138,14 @@ public class KKLayoutalgorithm<V, E>
 
             }
         }
-        D[0] = -((E_xm[maxm] - E2_xy * ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm))) / E2_xm);
-        D[1] = ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm));
+        Dx = -((E_xm[maxm] - E2_xy * ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm))) / E2_xm);
+        Dy = ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm));
+        Pair d;
+        d=new Pair(Dx,Dy);
+        return d;
     }
 
-    public void calculateL(int n, double[][] l, double L0, double[][] d) {
+    private void calculateL(int n, double[][] l, double L0, double[][] d) {
         double maxpathweight = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -154,7 +162,7 @@ public class KKLayoutalgorithm<V, E>
         }
     }
 
-    public void calculateExm_Eym(double[] E_xm, double[] E_ym, double[][] l, double[][] k, int n, int m) {
+    private void calculateExm_Eym(double[] E_xm, double[] E_ym, double[][] l, double[][] k, int n, int m) {
         for (int i = 0; i < n; i++) {
             if (i != m) {
                 E_xm[m] = E_xm[m] + (k[m][i] * ((x[m] - x[i]) - (l[m][i] * (x[m] - x[i]) / Math.sqrt((x[m] - x[i]) * (x[m] - x[i]) + (y[m] - y[i]) * (y[m] - y[i])))));
@@ -209,7 +217,7 @@ public class KKLayoutalgorithm<V, E>
             }
             i++;
         }
-        double L0 = 0;
+        double L0;
         if (width > height) {
             L0 = width; //L0=max(width,height)
         } else {
@@ -243,7 +251,7 @@ public class KKLayoutalgorithm<V, E>
         double[] E_xm = new double[n];
         double[] E_ym = new double[n];
 
-        double Dm, max_Dm = 0;
+        double Dm, max_Dm;
 
         while (true) {
             max_Dm = 0;
@@ -262,12 +270,12 @@ public class KKLayoutalgorithm<V, E>
 
             }
             while (max_Dm > epsilon) {
-                double Dy = 0.0;
-                double Dx = 0.0;
-                double[] D = new double[2];
-                calculateDxDy(n, k, l, maxm, E_xm, E_ym, D);
-                Dx = D[0];
-                Dy = D[1];
+                double Dy;
+                double Dx;
+                
+                Pair<Double,Double> D=calculateDxDy(n, k, l, maxm, E_xm, E_ym);
+                Dx = D.getFirst();
+                Dy = D.getSecond();
                 x[maxm] = x[maxm] + Dx;
                 y[maxm] = y[maxm] + Dy;
 
