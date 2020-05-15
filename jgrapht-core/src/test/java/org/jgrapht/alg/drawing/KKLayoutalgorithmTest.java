@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test {@link KKLayoutalgorithm}
  * @author : Elias Papadakis 
- * @original: Dimitris Michail
  */
 public class KKLayoutAlgorithmTest {
 
@@ -44,7 +43,7 @@ public class KKLayoutAlgorithmTest {
         sgraph.addEdge(3,4);
         sgraph.addEdge(3,6);
         sgraph.addEdge(4,6);
-        KKLayoutalgorithm<Integer, DefaultEdge> alg34 = new KKLayoutalgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
+        KKLayoutAlgorithm<Integer, DefaultEdge> alg34 = new KKLayoutAlgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
         Map<Integer, Point2D> result = mlayoutmodel.collect();
         
         assertTrue(result.get(1).getX() > result.get(2).getX());
@@ -99,7 +98,7 @@ public class KKLayoutAlgorithmTest {
         sgraph.addEdge(5,6);
         sgraph.addEdge(6,7);
         sgraph.addEdge(7,8);
-        KKLayoutalgorithm<Integer, DefaultEdge> alg34 = new KKLayoutalgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
+        KKLayoutAlgorithm<Integer, DefaultEdge> alg34 = new KKLayoutAlgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
         Map<Integer, Point2D> result = mlayoutmodel.collect();
         
         assertTrue(result.get(1).getX() > result.get(2).getX());
@@ -152,7 +151,7 @@ public class KKLayoutAlgorithmTest {
         sgraph.addEdge(5,8);
         sgraph.addEdge(6,7);
         sgraph.addEdge(9,10);
-        KKLayoutalgorithm<Integer, DefaultEdge> alg34 = new KKLayoutalgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
+        KKLayoutAlgorithm<Integer, DefaultEdge> alg34 = new KKLayoutAlgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
         Map<Integer, Point2D> result = mlayoutmodel.collect();
         
         assertTrue(result.get(1).getX() > result.get(2).getX());

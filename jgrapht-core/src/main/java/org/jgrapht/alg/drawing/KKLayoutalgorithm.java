@@ -26,7 +26,7 @@ import org.jgrapht.alg.util.Pair;
     
     @author : Elias Papadakis 
  */
-public class KKLayoutalgorithm<V, E>
+public class KKLayoutAlgorithm<V, E>
         implements LayoutAlgorithm2D<V, E> {
 
     /**
@@ -52,7 +52,7 @@ public class KKLayoutalgorithm<V, E>
     /**
      * Create a new layout algorithm
      */
-    public KKLayoutalgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+    public KKLayoutAlgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
         this(DEFAULT_ITERATIONS, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
@@ -61,7 +61,7 @@ public class KKLayoutalgorithm<V, E>
      *
      * @param iterations number of iterations
      */
-    public KKLayoutalgorithm(int iterations, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+    public KKLayoutAlgorithm(int iterations, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
         this(iterations, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
@@ -71,7 +71,7 @@ public class KKLayoutalgorithm<V, E>
      * @param iterations number of iterations
      * @param normalizationFactor normalization factor for the optimal distance
      */
-    public KKLayoutalgorithm(int iterations, double normalizationFactor, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+    public KKLayoutAlgorithm(int iterations, double normalizationFactor, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
         this(iterations, normalizationFactor, new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
@@ -82,7 +82,7 @@ public class KKLayoutalgorithm<V, E>
      * @param normalizationFactor normalization factor for the optimal distance
      * @param rng the random number generator
      */
-    public KKLayoutalgorithm(int iterations, double normalizationFactor, Random rng, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+    public KKLayoutAlgorithm(int iterations, double normalizationFactor, Random rng, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
         this.K = K;
         this.epsilon = epsilon;
         this.rng = Objects.requireNonNull(rng);
@@ -107,7 +107,7 @@ public class KKLayoutalgorithm<V, E>
      * supplier
      * @param rng the random number generators
      */
-    public KKLayoutalgorithm(
+    public KKLayoutAlgorithm(
             int iterations, double normalizationFactor,
             BiFunction<LayoutModel2D<V>, Integer, TemperatureModel> temperatureModelSupplier,
             Random rng, double K, double epsilon) {
