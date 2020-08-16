@@ -18,15 +18,19 @@
 package org.jgrapht.nio.gml;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
-import org.apache.commons.text.*;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
 import org.jgrapht.nio.gml.GmlParser.*;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Imports a graph from a GML file (Graph Modeling Language).

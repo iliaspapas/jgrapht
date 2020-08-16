@@ -17,11 +17,19 @@
  */
 package org.jgrapht.nio.graph6;
 
-import org.jgrapht.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphTests;
+import org.jgrapht.nio.ExportException;
+import org.jgrapht.nio.GraphExporter;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Exporter which exports graphs in graph6 or sparse6 format. A description of the format can be
@@ -58,7 +66,7 @@ public class Graph6Sparse6Exporter<V, E>
         SPARSE6
     }
 
-    private Format format;
+    private final Format format;
 
     private ByteArrayOutputStream byteArrayOutputStream;
 
@@ -112,11 +120,7 @@ public class Graph6Sparse6Exporter<V, E>
         }
 
         String g6 = "";
-        try {
-            g6 = byteArrayOutputStream.toString("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        g6 = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
         PrintWriter out = new PrintWriter(writer);
         out.print(g6);
         out.flush();

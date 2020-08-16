@@ -17,13 +17,16 @@
  */
 package org.jgrapht.nio.dot;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.util.Pair;
 import org.jgrapht.nio.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Import a graph from a DOT file.

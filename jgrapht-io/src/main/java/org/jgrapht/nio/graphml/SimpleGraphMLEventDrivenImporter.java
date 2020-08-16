@@ -17,33 +17,38 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.alg.util.*;
+import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
-import javax.xml.validation.*;
-import java.io.*;
-import java.util.*;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Imports a graph from a GraphML data source. The importer does not construct a graph but calls the
  * provided consumers with the appropriate arguments. Vertices are returned simply by their vertex
- * id and edges are returns as quadruples (id, source, target, weight) where both id and weight
- * maybe null.
+ * id and edges are returns as triples (source, target, weight) where weight maybe null.
  *
  * <p>
  * The importer notifies lazily and completely out-of-order for any additional vertex, edge or graph
  * attributes in the input file. Users can register consumers for vertex, edge and graph attributes
  * after construction of the importer. Finally, default attribute values are completely ignored.
  * Lazily here means that an edge is first reported with a null weight and its weight is reported
- * later using the edge attribute consumer. Since the same quadruple instance is used in all cases,
- * an edge may appear having a null weight when it is first reported and having a non-null weight
- * after the edge weight is reported.
+ * later using the edge attribute consumer. Since the same triple instance is used in all cases, an
+ * edge may appear having a null weight when it is first reported and having a non-null weight after
+ * the edge weight is reported.
  * 
  * <p>
  * This is a simple implementation with supports only a limited set of features of the GraphML
@@ -204,15 +209,15 @@ public class SimpleGraphMLEventDrivenImporter
             SAXParserFactory spf = SAXParserFactory.newInstance();
             if (schemaValidation) {
                 // load schema
-                InputStream xsdStream =
-                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                        GRAPHML_SCHEMA_FILENAME);
+                InputStream xsdStream = Thread
+                    .currentThread().getContextClassLoader()
+                    .getResourceAsStream(GRAPHML_SCHEMA_FILENAME);
                 if (xsdStream == null) {
                     throw new ImportException("Failed to locate GraphML xsd");
                 }
-                InputStream xlinkStream =
-                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                        XLINK_SCHEMA_FILENAME);
+                InputStream xlinkStream = Thread
+                    .currentThread().getContextClassLoader()
+                    .getResourceAsStream(XLINK_SCHEMA_FILENAME);
                 if (xlinkStream == null) {
                     throw new ImportException("Failed to locate XLink xsd");
                 }
@@ -304,12 +309,14 @@ public class SimpleGraphMLEventDrivenImporter
                         "This importer does not support nested graphs");
                 }
                 insideGraph++;
-                findAttribute(GRAPH_ID, attributes).ifPresent(
-                    value -> notifyGraphAttribute(
-                        GRAPH_ID, DefaultAttribute.createAttribute(value)));
-                findAttribute(GRAPH_EDGE_DEFAULT, attributes).ifPresent(
-                    value -> notifyGraphAttribute(
-                        GRAPH_EDGE_DEFAULT, DefaultAttribute.createAttribute(value)));
+                findAttribute(GRAPH_ID, attributes)
+                    .ifPresent(
+                        value -> notifyGraphAttribute(
+                            GRAPH_ID, DefaultAttribute.createAttribute(value)));
+                findAttribute(GRAPH_EDGE_DEFAULT, attributes)
+                    .ifPresent(
+                        value -> notifyGraphAttribute(
+                            GRAPH_EDGE_DEFAULT, DefaultAttribute.createAttribute(value)));
                 break;
             case NODE:
                 if (insideNode > 0 || insideEdge > 0) {
@@ -317,8 +324,9 @@ public class SimpleGraphMLEventDrivenImporter
                         "Nodes cannot be inside other nodes or edges");
                 }
                 insideNode++;
-                String nodeId = findAttribute(NODE_ID, attributes).orElseThrow(
-                    () -> new IllegalArgumentException("Node must have an identifier"));
+                String nodeId = findAttribute(NODE_ID, attributes)
+                    .orElseThrow(
+                        () -> new IllegalArgumentException("Node must have an identifier"));
                 currentNode = nodeId;
                 notifyVertex(currentNode);
                 notifyVertexAttribute(
@@ -352,7 +360,8 @@ public class SimpleGraphMLEventDrivenImporter
                 String keyAttrName = findAttribute(KEY_ATTR_NAME, attributes)
                     .orElseThrow(() -> new IllegalArgumentException("Key attribute name missing"));
                 currentKey = new Key(
-                    keyId, keyAttrName, findAttribute(KEY_ATTR_TYPE, attributes)
+                    keyId, keyAttrName,
+                    findAttribute(KEY_ATTR_TYPE, attributes)
                         .map(AttributeType::create).orElse(AttributeType.UNKNOWN),
                     findAttribute(KEY_FOR, attributes).orElse("ALL"));
                 break;
@@ -407,7 +416,7 @@ public class SimpleGraphMLEventDrivenImporter
         }
 
         @Override
-        public void characters(char ch[], int start, int length)
+        public void characters(char[] ch, int start, int length)
             throws SAXException
         {
             if (insideData == 1) {
@@ -471,6 +480,10 @@ public class SimpleGraphMLEventDrivenImporter
                         } catch (NumberFormatException e) {
                             // ignore
                         }
+                    } else {
+                        notifyEdgeAttribute(
+                            currentEdge, key.attributeName,
+                            new DefaultAttribute<>(currentDataValue.toString(), key.type));
                     }
                 }
             }

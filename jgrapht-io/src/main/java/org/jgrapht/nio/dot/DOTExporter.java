@@ -17,14 +17,17 @@
  */
 package org.jgrapht.nio.dot;
 
-import org.jgrapht.*;
+import org.jgrapht.Graph;
 import org.jgrapht.nio.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.Map.*;
-import java.util.function.*;
-import java.util.regex.*;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.regex.Matcher;
 
 /**
  * Exports a graph into a DOT file.
@@ -222,6 +225,8 @@ public class DOTExporter<V, E>
         final String attrValue = attribute.getValue();
         if (AttributeType.HTML.equals(attribute.getType())) {
             out.print("<" + attrValue + ">");
+        } else if(AttributeType.IDENTIFIER.equals(attribute.getType())) {
+            out.print(attrValue);
         } else {
             out.print("\"" + escapeDoubleQuotes(attrValue) + "\"");
         }

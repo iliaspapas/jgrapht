@@ -17,20 +17,23 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
-import javax.xml.validation.*;
-import java.io.*;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.*;
-import java.util.Map.*;
+import java.util.Map.Entry;
 
 /**
  * Imports a graph from a GraphML data source.
@@ -507,7 +510,7 @@ public class GraphMLEventDrivenImporter
         }
 
         @Override
-        public void characters(char ch[], int start, int length)
+        public void characters(char[] ch, int start, int length)
             throws SAXException
         {
             if (insideDefault) {

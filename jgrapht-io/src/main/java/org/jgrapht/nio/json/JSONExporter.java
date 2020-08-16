@@ -17,13 +17,16 @@
  */
 package org.jgrapht.nio.json;
 
-import org.apache.commons.text.*;
-import org.jgrapht.*;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jgrapht.Graph;
 import org.jgrapht.nio.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Exports a graph using <a href="https://tools.ietf.org/html/rfc8259">JSON</a>.

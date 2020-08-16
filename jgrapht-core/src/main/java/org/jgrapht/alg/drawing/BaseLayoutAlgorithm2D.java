@@ -30,7 +30,7 @@ import java.util.function.*;
  * @param <V> the vertex type
  * @param <E> the edge type
  */
-abstract class BaseLayoutAlgorithm2D<V, E>
+public abstract class BaseLayoutAlgorithm2D<V, E>
     implements
     LayoutAlgorithm2D<V, E>
 {

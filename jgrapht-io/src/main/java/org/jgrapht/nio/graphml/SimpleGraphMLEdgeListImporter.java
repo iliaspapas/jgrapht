@@ -17,12 +17,16 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.alg.util.*;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Imports a GraphML file as an edge list. Vertices are numbered from $0$ to $n-1$ in the order they

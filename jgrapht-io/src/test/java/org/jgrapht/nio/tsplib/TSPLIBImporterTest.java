@@ -18,20 +18,25 @@
 
 package org.jgrapht.nio.tsplib;
 
-import static org.junit.Assert.*;
-
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import java.util.stream.*;
-
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.nio.tsplib.TSPLIBImporter.*;
+import org.jgrapht.Graph;
+import org.jgrapht.Graphs;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.SimpleWeightedGraph;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.nio.tsplib.TSPLIBImporter.Metadata;
 import org.jgrapht.nio.tsplib.TSPLIBImporter.Node;
-import org.junit.*;
+import org.jgrapht.nio.tsplib.TSPLIBImporter.Specification;
+import org.junit.Test;
+
+import java.io.StringReader;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.*;
 
 public class TSPLIBImporterTest
 {
@@ -57,8 +62,8 @@ public class TSPLIBImporterTest
             return Arrays.copyOf(elements, elements.length);
         }
 
-        private static DecimalFormat indexFormat = new DecimalFormat("0000");
-        private static DecimalFormat coordinateFormat =
+        private static final DecimalFormat indexFormat = new DecimalFormat("0000");
+        private static final DecimalFormat coordinateFormat =
             new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
         @Override

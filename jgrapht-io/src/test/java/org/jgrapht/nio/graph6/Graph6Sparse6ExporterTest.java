@@ -17,16 +17,24 @@
  */
 package org.jgrapht.nio.graph6;
 
-import org.jgrapht.*;
-import org.jgrapht.generate.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphMetrics;
+import org.jgrapht.Graphs;
+import org.jgrapht.generate.GnpRandomGraphGenerator;
+import org.jgrapht.generate.NamedGraphGenerator;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.Pseudograph;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.ExportException;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -225,7 +233,7 @@ public class Graph6Sparse6ExporterTest
         Graph6Sparse6Exporter<V, E> exporter = new Graph6Sparse6Exporter<>(format);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        return new String(os.toByteArray(), "UTF-8");
+        return new String(os.toByteArray(), StandardCharsets.UTF_8);
     }
 
     private Graph<Integer, DefaultEdge> importGraph(String g6)

@@ -17,12 +17,17 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import org.jgrapht.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.Graph;
+import org.jgrapht.nio.BaseExporter;
+import org.jgrapht.nio.GraphExporter;
+import org.jgrapht.nio.IntegerIdProvider;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Exports a graph into DIMACS format.
@@ -117,7 +122,7 @@ public class DIMACSExporter<V, E>
             out.print(getVertexId(g.getEdgeTarget(edge)));
             if (exportEdgeWeights) {
                 out.print(" ");
-                out.print(Double.toString(g.getEdgeWeight(edge)));
+                out.print(g.getEdgeWeight(edge));
             }
             out.println();
         }

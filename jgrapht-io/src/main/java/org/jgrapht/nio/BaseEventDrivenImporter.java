@@ -17,10 +17,12 @@
  */
 package org.jgrapht.nio;
 
-import org.jgrapht.alg.util.*;
+import org.jgrapht.alg.util.Pair;
 
-import java.util.*;
-import java.util.function.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Base implementation for an importer which uses consumers to notify interested parties. Note that
@@ -34,14 +36,14 @@ import java.util.function.*;
  */
 public abstract class BaseEventDrivenImporter<V, E>
 {
-    private List<Consumer<Integer>> vertexCountConsumers;
-    private List<Consumer<Integer>> edgeCountConsumers;
-    private List<Consumer<V>> vertexConsumers;
-    private List<Consumer<E>> edgeConsumers;
-    private List<BiConsumer<String, Attribute>> graphAttributeConsumers;
-    private List<BiConsumer<Pair<V, String>, Attribute>> vertexAttributeConsumers;
-    private List<BiConsumer<Pair<E, String>, Attribute>> edgeAttributeConsumers;
-    private List<Consumer<ImportEvent>> importEventConsumers;
+    private final List<Consumer<Integer>> vertexCountConsumers;
+    private final List<Consumer<Integer>> edgeCountConsumers;
+    private final List<Consumer<V>> vertexConsumers;
+    private final List<Consumer<E>> edgeConsumers;
+    private final List<BiConsumer<String, Attribute>> graphAttributeConsumers;
+    private final List<BiConsumer<Pair<V, String>, Attribute>> vertexAttributeConsumers;
+    private final List<BiConsumer<Pair<E, String>, Attribute>> edgeAttributeConsumers;
+    private final List<Consumer<ImportEvent>> importEventConsumers;
 
     /**
      * Constructor

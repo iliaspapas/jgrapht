@@ -17,12 +17,17 @@
  */
 package org.jgrapht.nio.matrix;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedMultigraph;
+import org.jgrapht.graph.Pseudograph;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.ExportException;
+import org.jgrapht.nio.GraphExporter;
+import org.junit.Test;
 
-import java.io.*;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import static org.junit.Assert.assertEquals;
 

@@ -17,13 +17,17 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.alg.util.*;
-import org.jgrapht.nio.*;
-import org.junit.*;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.Triple;
+import org.jgrapht.nio.ImportException;
+import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 

@@ -17,11 +17,13 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import org.jgrapht.*;
+import org.jgrapht.Graph;
 import org.jgrapht.graph.*;
-import org.junit.*;
+import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
 
@@ -114,7 +116,7 @@ public class DIMACSExporterTest
         exporter.setFormat(DIMACSFormat.SHORTEST_PATH);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED, res);
     }
 
@@ -134,7 +136,7 @@ public class DIMACSExporterTest
         exporter.setParameter(DIMACSExporter.Parameter.EXPORT_EDGE_WEIGHTS, true);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED_AS_UNWEIGHTED, res);
     }
 
@@ -158,7 +160,7 @@ public class DIMACSExporterTest
         exporter.setFormat(DIMACSFormat.SHORTEST_PATH);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(DIRECTED, res);
     }
 
@@ -181,7 +183,7 @@ public class DIMACSExporterTest
         exporter.setParameter(DIMACSExporter.Parameter.EXPORT_EDGE_WEIGHTS, true);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED_WEIGHTED, res);
     }
 
@@ -223,7 +225,7 @@ public class DIMACSExporterTest
         exporter.setFormat(DIMACSFormat.COLORING);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(DIRECTED_COLORING, res);
     }
 
@@ -247,7 +249,7 @@ public class DIMACSExporterTest
         exporter.setFormat(DIMACSFormat.MAX_CLIQUE);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(DIRECTED_MAX_CLIQUE, res);
     }
 

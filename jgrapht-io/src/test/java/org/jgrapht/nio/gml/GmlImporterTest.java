@@ -17,15 +17,25 @@
  */
 package org.jgrapht.nio.gml;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedWeightedPseudograph;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.ExportException;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -484,7 +494,7 @@ public class GmlImporterTest
         exporter.setParameter(GmlExporter.Parameter.EXPORT_EDGE_WEIGHTS, true);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g1, os);
-        String output = new String(os.toByteArray(), "UTF-8");
+        String output = new String(os.toByteArray(), StandardCharsets.UTF_8);
 
         Graph<String, DefaultWeightedEdge> g2 =
             readGraph(output, DefaultWeightedEdge.class, true, true);

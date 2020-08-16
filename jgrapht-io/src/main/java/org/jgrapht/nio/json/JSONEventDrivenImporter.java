@@ -18,14 +18,17 @@
 package org.jgrapht.nio.json;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
-import org.jgrapht.*;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jgrapht.Graph;
 import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
-import org.jgrapht.nio.json.JsonParser.*;
+import org.jgrapht.nio.json.JsonParser.JsonContext;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.*;
 
 /**
@@ -377,8 +380,9 @@ public class JSONEventDrivenImporter
         private String unquote(String value)
         {
             if (value.startsWith("\"") && value.endsWith("\"")) {
-                return value.substring(1, value.length() - 1);
+                value = value.substring(1, value.length() - 1);
             }
+            value = StringEscapeUtils.unescapeJson(value);
             return value;
         }
 

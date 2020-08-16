@@ -17,10 +17,10 @@
  */
 package org.jgrapht.nio;
 
-import org.jgrapht.*;
+import org.jgrapht.Graph;
 
 import java.io.*;
-import java.nio.charset.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Interface for graph importers

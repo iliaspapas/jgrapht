@@ -17,18 +17,23 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.*;
+import org.jgrapht.Graph;
 import org.jgrapht.nio.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
-import javax.xml.transform.*;
-import javax.xml.transform.sax.*;
-import javax.xml.transform.stream.*;
-import java.io.*;
-import java.util.*;
-import java.util.Map.*;
-import java.util.function.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Exports a graph as GraphML.
@@ -51,7 +56,7 @@ public class GraphMLExporter<V, E>
     GraphExporter<V, E>
 {
     // registered attributes
-    private Map<String, AttributeDetails> registeredAttributes = new LinkedHashMap<>();
+    private final Map<String, AttributeDetails> registeredAttributes = new LinkedHashMap<>();
     private static final String ATTRIBUTE_KEY_PREFIX = "key";
     private int totalAttributes = 0;
 
@@ -109,9 +114,9 @@ public class GraphMLExporter<V, E>
         EDGE("edge"),
         ALL("all");
 
-        private String name;
+        private final String name;
 
-        private AttributeCategory(String name)
+        AttributeCategory(String name)
         {
             this.name = name;
         }

@@ -17,11 +17,12 @@
  */
 package org.jgrapht.nio;
 
-import org.jgrapht.alg.util.*;
+import org.jgrapht.alg.util.Pair;
 
 import java.io.*;
-import java.nio.charset.*;
-import java.util.function.*;
+import java.nio.charset.StandardCharsets;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Interface for an importer using consumers.

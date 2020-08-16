@@ -17,13 +17,18 @@
  */
 package org.jgrapht.nio.gml;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphType;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Imports a graph from a GML file (Graph Modeling Language).

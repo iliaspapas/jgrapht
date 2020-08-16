@@ -17,13 +17,18 @@
  */
 package org.jgrapht.nio.graph6;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.nio.BaseEventDrivenImporter;
+import org.jgrapht.nio.DefaultAttribute;
+import org.jgrapht.nio.GraphImporter;
+import org.jgrapht.nio.ImportException;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Importer which reads graphs in graph6 or sparse6 format.

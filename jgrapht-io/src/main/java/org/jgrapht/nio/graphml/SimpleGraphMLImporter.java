@@ -17,13 +17,18 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.Triple;
 import org.jgrapht.nio.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Imports a graph from a GraphML data source.
@@ -256,7 +261,7 @@ public class SimpleGraphMLImporter<V, E>
     private class Consumers
     {
         private Graph<V, E> graph;
-        private Map<String, V> nodesMap;
+        private final Map<String, V> nodesMap;
         private E lastEdge;
         private Triple<String, String, Double> lastTriple;
 

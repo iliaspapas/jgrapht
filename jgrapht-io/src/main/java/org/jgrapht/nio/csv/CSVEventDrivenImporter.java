@@ -18,12 +18,16 @@
 package org.jgrapht.nio.csv;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.*;
+import org.jgrapht.nio.BaseEventDrivenImporter;
+import org.jgrapht.nio.EventDrivenImporter;
+import org.jgrapht.nio.ImportEvent;
+import org.jgrapht.nio.ImportException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.*;
 
 /**
@@ -240,7 +244,7 @@ public class CSVEventDrivenImporter
         extends
         RowCSVListener
     {
-        private boolean assumeEdgeWeights;
+        private final boolean assumeEdgeWeights;
 
         public AdjacencyListCSVListener()
         {
@@ -296,20 +300,19 @@ public class CSVEventDrivenImporter
         extends
         RowCSVListener
     {
-        private boolean assumeNodeIds;
-        private boolean assumeEdgeWeights;
-        private boolean assumeZeroWhenNoEdge;
+        private final boolean assumeNodeIds;
+        private final boolean assumeEdgeWeights;
+        private final boolean assumeZeroWhenNoEdge;
         private int verticesCount;
         private int currentVertex;
         private String currentVertexName;
-        private Map<Integer, String> columnIndex;
+        private final Map<Integer, String> columnIndex;
 
         public MatrixCSVListener()
         {
             super();
             this.assumeNodeIds = parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_NODEID);
             this.assumeEdgeWeights = parameters.contains(CSVFormat.Parameter.EDGE_WEIGHTS);
-            ;
             this.assumeZeroWhenNoEdge =
                 parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE);
             this.verticesCount = 0;

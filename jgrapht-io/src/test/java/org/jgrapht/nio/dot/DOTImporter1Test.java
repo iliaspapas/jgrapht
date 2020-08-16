@@ -17,14 +17,23 @@
  */
 package org.jgrapht.nio.dot;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedMultigraph;
+import org.jgrapht.graph.Multigraph;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.ExportException;
+import org.jgrapht.nio.GraphImporter;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -281,7 +290,7 @@ public class DOTImporter1Test
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(start, os);
-        String output = new String(os.toByteArray(), "UTF-8");
+        String output = new String(os.toByteArray(), StandardCharsets.UTF_8);
 
         DirectedMultigraph<String, DefaultEdge> result = new DirectedMultigraph<>(
             SupplierUtil.createStringSupplier(), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);

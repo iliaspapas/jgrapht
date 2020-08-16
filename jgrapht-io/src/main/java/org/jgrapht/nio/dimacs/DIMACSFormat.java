@@ -102,7 +102,7 @@ public enum DIMACSFormat
     private final String problem;
     private final String edge;
 
-    private DIMACSFormat(String problem, String edge)
+    DIMACSFormat(String problem, String edge)
     {
         this.problem = problem;
         this.edge = edge;

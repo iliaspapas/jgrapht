@@ -17,13 +17,25 @@
  */
 package org.jgrapht.nio.dot;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.Multigraph;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.DefaultAttribute;
+import org.jgrapht.nio.ExportException;
+import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
@@ -101,7 +113,7 @@ public class DOTExporterTest
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals((strict) ? "strict " + UNDIRECTED : UNDIRECTED, res);
     }
 
@@ -126,7 +138,7 @@ public class DOTExporterTest
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(
             (strict) ? "strict " + UNDIRECTED_WITH_GRAPH_ATTRIBUTES
                 : UNDIRECTED_WITH_GRAPH_ATTRIBUTES,
@@ -221,7 +233,7 @@ public class DOTExporterTest
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(correctResult, res);
     }
 

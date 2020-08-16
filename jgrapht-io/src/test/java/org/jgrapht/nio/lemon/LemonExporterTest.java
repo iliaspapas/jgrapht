@@ -17,11 +17,16 @@
  */
 package org.jgrapht.nio.lemon;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.SimpleWeightedGraph;
+import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
 
@@ -117,7 +122,7 @@ public class LemonExporterTest
         LemonExporter<String, DefaultEdge> exporter = new LemonExporter<String, DefaultEdge>();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED, res);
     }
 
@@ -136,7 +141,7 @@ public class LemonExporterTest
         exporter.setParameter(LemonExporter.Parameter.EXPORT_EDGE_WEIGHTS, true);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED_DEFAULT_WEIGHTS, res);
     }
 
@@ -158,7 +163,7 @@ public class LemonExporterTest
         exporter.setParameter(LemonExporter.Parameter.EXPORT_EDGE_WEIGHTS, true);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED_WEIGHTED, res);
     }
     
@@ -177,7 +182,7 @@ public class LemonExporterTest
         exporter.setParameter(LemonExporter.Parameter.ESCAPE_STRINGS_AS_JAVA, true);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
-        String res = new String(os.toByteArray(), "UTF-8");
+        String res = new String(os.toByteArray(), StandardCharsets.UTF_8);
         assertEquals(UNDIRECTED_WITH_ESCAPE, res);
     }
 

@@ -17,17 +17,23 @@
  */
 package org.jgrapht.nio.graph6;
 
-import org.jgrapht.*;
-import org.jgrapht.generate.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphMetrics;
+import org.jgrapht.Graphs;
+import org.jgrapht.generate.NamedGraphGenerator;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.Pseudograph;
+import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -48,11 +54,7 @@ public class Graph6Sparse6ImporterTest
             .vertexSupplier(SupplierUtil.createIntegerSupplier()).edgeClass(edgeClass).buildGraph();
 
         Graph6Sparse6Importer<Integer, E> importer = new Graph6Sparse6Importer<>();
-        try {
-            importer.importGraph(g, new InputStreamReader(in, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // cannot happen
-        }
+        importer.importGraph(g, new InputStreamReader(in, StandardCharsets.UTF_8));
         return g;
     }
 
@@ -112,13 +114,9 @@ public class Graph6Sparse6ImporterTest
             .edgeSupplier(SupplierUtil.DEFAULT_EDGE_SUPPLIER).buildGraph();
 
         Graph6Sparse6Importer<String, DefaultEdge> importer = new Graph6Sparse6Importer<>();
-        importer.setVertexFactory(id->String.valueOf("node"+id));
-        try {
-            importer.importGraph(graph, new InputStreamReader(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // cannot happen
-        }
-        
+        importer.setVertexFactory(id-> "node" + id);
+        importer.importGraph(graph, new InputStreamReader(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
+
         Graph<String, DefaultEdge> orig = new Pseudograph<>(DefaultEdge.class);
         Graphs.addAllVertices(orig, Arrays.asList("node0", "node1", "node2"));
         orig.addEdge("node0", "node1");

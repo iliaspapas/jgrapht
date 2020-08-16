@@ -17,13 +17,17 @@
  */
 package org.jgrapht.nio.lemon;
 
-import org.apache.commons.text.*;
-import org.jgrapht.*;
-import org.jgrapht.nio.*;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jgrapht.Graph;
+import org.jgrapht.nio.BaseExporter;
+import org.jgrapht.nio.GraphExporter;
+import org.jgrapht.nio.IntegerIdProvider;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Exports a graph into Lemon graph format (LGF).
@@ -175,7 +179,7 @@ public class LemonExporter<V, E>
             out.print(prepareId(t));
             if (exportEdgeWeights) {
                 out.print(TAB1);
-                out.print(Double.toString(g.getEdgeWeight(edge)));
+                out.print(g.getEdgeWeight(edge));
             }
             out.println();
         }

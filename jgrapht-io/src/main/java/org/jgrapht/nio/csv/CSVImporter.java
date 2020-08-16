@@ -17,13 +17,21 @@
  */
 package org.jgrapht.nio.csv;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphType;
+import org.jgrapht.alg.util.Triple;
+import org.jgrapht.nio.BaseEventDrivenImporter;
+import org.jgrapht.nio.DefaultAttribute;
+import org.jgrapht.nio.GraphImporter;
+import org.jgrapht.nio.ImportException;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Imports a graph from a CSV Format or any other Delimiter-separated value format.

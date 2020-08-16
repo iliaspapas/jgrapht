@@ -1,99 +1,56 @@
 package org.jgrapht.alg.drawing;
-
-import java.util.Objects;
-import java.util.Random;
-import java.util.function.BiFunction;
 import org.jgrapht.Graph;
-
+import org.jgrapht.alg.drawing.model.Box2D;
 import org.jgrapht.alg.drawing.model.LayoutModel2D;
 import org.jgrapht.alg.drawing.model.MapLayoutModel2D;
 import org.jgrapht.alg.drawing.model.Point2D;
-
-import org.jgrapht.alg.drawing.model.Box2D;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.alg.shortestpath.*;
+import org.jgrapht.alg.shortestpath.FloydWarshallShortestPaths;
 import org.jgrapht.alg.util.Pair;
+import org.jgrapht.graph.SimpleGraph;
+import java.util.Objects;
+import java.util.Random;
 
 /*This algorithm is based on the algorithm kamada and kawai build for graph drawing.
-    
-    This is an algoithm which successfuly drawes undirected graphs.The basic idea of the algorithm 
-    is that we consider the desirable geometric distance between two vertices in the drawing 
+
+    This is an algorithm which successfully drawes undirected graphs.The basic idea of the algorithm
+    is that we consider the desirable geometric distance between two vertices in the drawing
     as the graph theoretic distance between them in the corresponding graph . This algorithm
-    consideres the edges between two vertices as springes. So the algorithm drawes a graph 
-    which is the optimal layout of vertices as the state in which the total spring energy 
+    considers the edges between two vertices as springs. So the algorithm drawes a graph
+    which is the optimal layout of vertices as the state in which the total spring energy
     of the system is minimal
-    
-    
-    @author : Elias Papadakis 
+
+
+    @author : Elias Papadakis
  */
-public class KKLayoutAlgorithm<V, E>
-        implements LayoutAlgorithm2D<V, E> {
+public class KKLayoutAlgorithm<V, E> extends
+        BaseLayoutAlgorithm2D<V, E> {
 
-    /**
-     * Default number of iterations
-     */
-    public static final int DEFAULT_ITERATIONS = 100;
-
-    /**
-     * Default normalization factor when calculating optimal distance
-     */
-    public static final double DEFAULT_NORMALIZATION_FACTOR = 0.5;
 
     protected Random rng;
     protected double L;
     protected double K;
     protected double epsilon;
-    protected double normalizationFactor;
-    protected int iterations;
     protected double[] x;
     protected double[] y;
-    protected BiFunction<LayoutModel2D<V>, Integer, TemperatureModel> temperatureModelSupplier;
+
 
     /**
      * Create a new layout algorithm
      */
-    public KKLayoutAlgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
-        this(DEFAULT_ITERATIONS, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel, K, epsilon);
+    public KKLayoutAlgorithm(SimpleGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+        this(new Random(), sgraph, mlayoutmodel, K, epsilon);
     }
 
     /**
      * Create a new layout algorithm
      *
-     * @param iterations number of iterations
-     */
-    public KKLayoutAlgorithm(int iterations, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
-        this(iterations, DEFAULT_NORMALIZATION_FACTOR, new Random(), sgraph, mlayoutmodel, K, epsilon);
-    }
-
-    /**
-     * Create a new layout algorithm
-     *
-     * @param iterations number of iterations
-     * @param normalizationFactor normalization factor for the optimal distance
-     */
-    public KKLayoutAlgorithm(int iterations, double normalizationFactor, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
-        this(iterations, normalizationFactor, new Random(), sgraph, mlayoutmodel, K, epsilon);
-    }
-
-    /**
-     * Create a new layout algorithm
-     *
-     * @param iterations number of iterations
-     * @param normalizationFactor normalization factor for the optimal distance
      * @param rng the random number generator
      */
-    public KKLayoutAlgorithm(int iterations, double normalizationFactor, Random rng, SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
+    public KKLayoutAlgorithm(Random rng, SimpleGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel, double K, double epsilon) {
         this.K = K;
         this.epsilon = epsilon;
         this.rng = Objects.requireNonNull(rng);
-        this.iterations = iterations;
-        this.normalizationFactor = normalizationFactor;
-        this.temperatureModelSupplier = (model, totalIterations) -> {
-            double dimension
-                    = Math.min(model.getDrawableArea().getWidth(), model.getDrawableArea().getHeight());
-            return new InverseLinearTemperatureModel(
-                    -1d * dimension / (10d * totalIterations), dimension / 10d);
-        };
+
         executealgorithm(sgraph, mlayoutmodel);
 
     }
@@ -101,47 +58,39 @@ public class KKLayoutAlgorithm<V, E>
     /**
      * Create a new layout algorithm
      *
-     * @param iterations number of iterations
-     * @param normalizationFactor normalization factor for the optimal distance
-     * @param temperatureModelSupplier a simulated annealing temperature model
-     * supplier
      * @param rng the random number generators
      */
-    public KKLayoutAlgorithm(
-            int iterations, double normalizationFactor,
-            BiFunction<LayoutModel2D<V>, Integer, TemperatureModel> temperatureModelSupplier,
-            Random rng, double K, double epsilon) {
+    public KKLayoutAlgorithm(Random rng, double K, double epsilon) {
         this.rng = Objects.requireNonNull(rng);
-        this.iterations = iterations;
-        this.normalizationFactor = normalizationFactor;
-        this.temperatureModelSupplier = Objects.requireNonNull(temperatureModelSupplier);
         this.K = K;
         this.epsilon = epsilon;
     }
 
-    private void executealgorithm(SimpleDirectedGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel) {
+    private void executealgorithm(SimpleGraph<V, E> sgraph, MapLayoutModel2D<V> mlayoutmodel) {
         layout(sgraph, mlayoutmodel);
     }
 
-    private Pair<Double,Double> calculateDxDy(int n, double[][] k, double[][] l, int maxm, double[] E_xm, double[] E_ym) {
-        double E2_xm = 0;
-        double E2_ym = 0;
-        double E2_yx = 0;
-        double E2_xy = 0;
-        double Dx,Dy;
+    private Pair<Double, Double> calculateDxDy(int n, double[][] k, double[][] l, int maxm, double[] E_xm, double[] E_ym) {
+        double Energy2_xm = 0;
+        double Energy2_ym = 0;
+        double Energy2_yx = 0;
+        double Energy2_xy = 0;
+        double Dx, Dy;
         for (int i = 0; i < n; i++) {
             if (i != maxm) {
-                E2_xm += k[maxm][i] * ((1 - l[maxm][i] * (y[maxm] - y[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
-                E2_ym += k[maxm][i] * ((1 - l[maxm][i] * (x[maxm] - x[i]) * (x[maxm] - x[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
-                E2_yx += k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
-                E2_xy += k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+                Energy2_xm += k[maxm][i] * (1 - ((l[maxm][i] * (y[maxm] - y[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))))));
+                Energy2_ym += k[maxm][i] * (1 - ((l[maxm][i] * (x[maxm] - x[i]) * (x[maxm] - x[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))))));
+                Energy2_yx += k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
+                Energy2_xy += k[maxm][i] * (l[maxm][i] * ((x[maxm] - x[i]) * (y[maxm] - y[i])) / (Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i]))) * Math.sqrt((x[maxm] - x[i]) * (x[maxm] - x[i]) + ((y[maxm] - y[i]) * (y[maxm] - y[i])))));
 
             }
         }
-        Dx = -((E_xm[maxm] - E2_xy * ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm))) / E2_xm);
-        Dy = ((E_ym[maxm] * E2_xm + E2_yx * E_xm[maxm]) / (-E2_yx * E2_xy + E2_ym * E2_xm));
+        double denominator = Energy2_xm * Energy2_ym - Energy2_yx * Energy2_xy;
+        Dx = (Energy2_xy * E_ym[maxm] - Energy2_ym * E_xm[maxm]) / denominator;
+        Dy = (Energy2_yx * E_xm[maxm] - Energy2_xm * E_ym[maxm]) / denominator;
+
         Pair d;
-        d=new Pair(Dx,Dy);
+        d = new Pair(Dx, Dy);
         return d;
     }
 
@@ -154,7 +103,7 @@ public class KKLayoutAlgorithm<V, E>
                 }
             }
         }
-        L = L0 / maxpathweight;
+        L = (L0 / maxpathweight) * 0.9;
         for (int i = 0; i < l.length; i++) {
             for (int j = 0; j < l[0].length; j++) {
                 l[i][j] = L * d[i][j];
@@ -171,6 +120,82 @@ public class KKLayoutAlgorithm<V, E>
         }
     }
 
+    public void adjustForGravity(double width, double height, double[] x, double[] y, Graph<V, E> graph, LayoutModel2D<V> model) {
+
+        double gx = 0;
+        double gy = 0;
+        for (int i = 0; i < x.length; i++) {
+            gx += x[i];
+            gy += y[i];
+        }
+        gx /= x.length;
+        gy /= x.length;
+        double diffx = width / 2 - gx;
+        double diffy = height / 2 - gy;
+
+        for (int i = 0; i < x.length; i++) {
+            x[i] = x[i] + diffx;
+            y[i] = y[i] + diffy;
+
+        }
+        int i = 0;
+        for (V v : graph.vertexSet()) {
+            Point2D vPos = new Point2D(x[i], y[i]);
+
+            model.put(v, vPos);
+            i++;
+        }
+    }
+
+    private double calcEnergy(int n, double[][] d, double[] x, double[] y) {
+        double energy = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                double dist = d[i][j];
+                double l_ij = L * dist;
+                double k_ij = K / (dist * dist);
+                double dx = x[i] - x[j];
+                double dy = y[i] - y[j];
+                double d1 = Math.sqrt(dx * dx + dy * dy);
+
+                energy += k_ij / 2 * (dx * dx + dy * dy + l_ij * l_ij - 2 * l_ij * d1);
+            }
+        }
+        return energy;
+    }
+
+    /**
+     * Calculates the energy function E as if positions of the specified nodes are exchanged.
+     */
+    private double calcEnergyIfExchanged(int p, int q, int n, double[][] d, double[] x, double[] y) {
+        if (p >= q) {
+            throw new RuntimeException("p should be < q");
+        }
+        double energy = 0; // < 0
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int ii = i;
+                int jj = j;
+                if (i == p) {
+                    ii = q;
+                }
+                if (j == q) {
+                    jj = p;
+                }
+
+                double dist = d[i][j];
+                double l_ij = L * dist;
+                double k_ij = K / (dist * dist);
+                double dx = x[ii] - y[jj];
+                double dy = y[ii] - y[jj];
+                double d1 = Math.sqrt(dx * dx + dy * dy);
+
+                energy += k_ij / 2 * (dx * dx + dy * dy + l_ij * l_ij - 2 * l_ij * d1);
+            }
+        }
+        return energy;
+    }
+
     @Override
     public void layout(Graph<V, E> graph, LayoutModel2D<V> model) {
 
@@ -178,18 +203,26 @@ public class KKLayoutAlgorithm<V, E>
         Box2D drawableArea = model.getDrawableArea();
         double minX = drawableArea.getMinX();
         double minY = drawableArea.getMinY();
-        System.out.println("drawable " + minX + "," + minY);
+        if (getInitializer() != null) {
+            // respect user initializer
+            init(graph, model);
+            // make sure all vertices have coordinates
+            for (V v : graph.vertexSet()) {
+                Point2D vPos = model.get(v);
+                if (vPos == null) {
+                    model.put(v, Point2D.of(minX, minY));
+                }
+            }
+        } else {
+            // assign random initial positions
+            MapLayoutModel2D<V> randomModel
+                    = new MapLayoutModel2D(drawableArea);
+            new RandomLayoutAlgorithm2D<V, E>(rng).layout(graph, randomModel);
+            for (V v : graph.vertexSet()) {
 
-        // assign random initial positions
-        MapLayoutModel2D<V> randomModel
-                = new MapLayoutModel2D(drawableArea);
-        new RandomLayoutAlgorithm2D<V, E>(rng).layout(graph, randomModel);
-        for (V v : graph.vertexSet()) {
-            System.out.println("v" + v);
-
-            model.put(v, randomModel.get(v));
+                model.put(v, randomModel.get(v));
+            }
         }
-
         // calculate optimal distance between vertices
         double width = drawableArea.getWidth();
         double height = drawableArea.getHeight();
@@ -198,13 +231,8 @@ public class KKLayoutAlgorithm<V, E>
         if (n == 0) {
             return;
         }
-        System.out.println("number vertices " + n);
-        for (E v : graph.edgeSet()) {
-            System.out.println("Edge:" + v);
-
-        }
         int i, j;
-        //veltisth apostash sto graph metaksy korifwn--L 
+        //veltisth apostash sto graph metaksy korifwn--L
         // L = normalizationFactor * Math.sqrt(area / n);
         FloydWarshallShortestPaths spath = new FloydWarshallShortestPaths(graph);
         double[][] d = new double[n][n];
@@ -218,13 +246,12 @@ public class KKLayoutAlgorithm<V, E>
             i++;
         }
         double L0;
-        if (width > height) {
+        if (width < height) {
             L0 = width; //L0=max(width,height)
         } else {
             L0 = height;
         }
         //L=L0/maxpath
-
         double[][] l = new double[d.length][d[0].length];
         double[][] k = new double[l.length][l[0].length];
         calculateL(n, l, L0, d);
@@ -232,7 +259,7 @@ public class KKLayoutAlgorithm<V, E>
         for (V source : graph.vertexSet()) {
             j = 0;
             for (V sink : graph.vertexSet()) {
-                k[i][j] = K / spath.getPathWeight(source, sink);
+                k[i][j] = K / (spath.getPathWeight(source, sink) * spath.getPathWeight(source, sink));
                 j++;
             }
             i++;
@@ -252,10 +279,9 @@ public class KKLayoutAlgorithm<V, E>
         double[] E_ym = new double[n];
 
         double Dm, max_Dm;
-
-        while (true) {
+        for (int u = 1; u <= 100000; u++) {
             max_Dm = 0;
-            int maxm = 0;
+            int maxm = -1;
             //compute max_dm
             for (int m = 0; m < n; m++) {
                 E_xm[m] = 0;
@@ -267,88 +293,43 @@ public class KKLayoutAlgorithm<V, E>
                     max_Dm = Dm;
                     maxm = m;
                 }
-
             }
-            while (max_Dm > epsilon) {
+            if (maxm == -1) break;
+            if (max_Dm <= epsilon) {
+                break;
+            }
+
+            for (int f = 1; f <= 100000; f++) {
                 double Dy;
                 double Dx;
-                
-                Pair<Double,Double> D=calculateDxDy(n, k, l, maxm, E_xm, E_ym);
+
+                Pair<Double, Double> D = calculateDxDy(n, k, l, maxm, E_xm, E_ym);
                 Dx = D.getFirst();
                 Dy = D.getSecond();
                 x[maxm] = x[maxm] + Dx;
                 y[maxm] = y[maxm] + Dy;
-
                 E_xm[maxm] = 0;
                 E_ym[maxm] = 0;
                 calculateExm_Eym(E_xm, E_ym, l, k, n, maxm);
                 Dm = Math.sqrt(E_xm[maxm] * E_xm[maxm] + E_ym[maxm] * E_ym[maxm]);
-                max_Dm = Dm;
-
+                // max_Dm = Dm;
+                if (Dm < epsilon) break;
             }
+            adjustForGravity(width, height, x, y, graph, model);
 
-            if (max_Dm <= epsilon) {
-                break;
-            }
+            double energy = calcEnergy(n, d, x, y);
         }
         i = 0;
         for (V v : graph.vertexSet()) {
             Point2D vPos = new Point2D(x[i], y[i]);
+            vPos = Point2D.of(
+                    Math.min(minX + width, Math.max(minX, vPos.getX())),
+                    Math.min(minY + height, Math.max(minY, vPos.getY())));
             model.put(v, vPos);
             i++;
         }
 
     }
 
-    /**
-     * A general interface for a temperature model.
-     *
-     * <p>
-     * The temperature should start from a high enough value and gradually
-     * become zero.
-     */
-    public interface TemperatureModel {
-
-        /**
-         * Return the temperature for the new iteration
-         *
-         * @param iteration the next iteration
-         * @param maxIterations total number of iterations
-         * @return the temperature for the next iteration
-         */
-        double temperature(int iteration, int maxIterations);
-
-    }
-
-    /**
-     * An inverse linear temperature model.
-     */
-    protected class InverseLinearTemperatureModel
-            implements
-            TemperatureModel {
-
-        private double a;
-        private double b;
-
-        /**
-         * Create a new inverse linear temperature model.
-         *
-         * @param a a
-         * @param b b
-         */
-        public InverseLinearTemperatureModel(double a, double b) {
-            this.a = a;
-            this.b = b;
-        }
-
-        @Override
-        public double temperature(int iteration, int maxIterations) {
-            if (iteration >= maxIterations - 1) {
-                return 0.0;
-            }
-            return a * iteration + b;
-        }
-
-    }
 
 }

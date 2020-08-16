@@ -17,10 +17,15 @@
  */
 package org.jgrapht.nio.graph6;
 
-import org.jgrapht.alg.util.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.nio.BaseEventDrivenImporter;
+import org.jgrapht.nio.EventDrivenImporter;
+import org.jgrapht.nio.ImportEvent;
+import org.jgrapht.nio.ImportException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Importer which reads graphs in graph6 or sparse6 format.
@@ -115,7 +120,7 @@ public class Graph6Sparse6EventDrivenImporter
     private class Parser
     {
         private Format format;
-        private byte[] bytes;
+        private final byte[] bytes;
         private int byteIndex;
         private int bitIndex;
         private int n;
@@ -129,13 +134,13 @@ public class Graph6Sparse6EventDrivenImporter
         {
             this.format = Format.GRAPH6;
             if (inputLine.startsWith(":")) {
-                inputLine = inputLine.substring(1, inputLine.length());
+                inputLine = inputLine.substring(1);
                 this.format = Format.SPARSE6;
             } else if (inputLine.startsWith(">>sparse6<<:")) {
-                inputLine = inputLine.substring(12, inputLine.length());
+                inputLine = inputLine.substring(12);
                 this.format = Format.SPARSE6;
             } else if (inputLine.startsWith(">>graph6<<")) {
-                inputLine = inputLine.substring(10, inputLine.length());
+                inputLine = inputLine.substring(10);
             }
 
             this.bytes = inputLine.getBytes();

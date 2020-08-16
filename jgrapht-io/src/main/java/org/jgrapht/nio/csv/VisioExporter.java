@@ -17,11 +17,14 @@
  */
 package org.jgrapht.nio.csv;
 
-import org.jgrapht.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.Graph;
+import org.jgrapht.nio.BaseExporter;
+import org.jgrapht.nio.GraphExporter;
+import org.jgrapht.nio.IntegerIdProvider;
 
-import java.io.*;
-import java.util.function.*;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.function.Function;
 
 /**
  * Exports a graph to a CSV format that can be imported into MS Visio.

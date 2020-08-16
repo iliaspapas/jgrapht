@@ -18,13 +18,15 @@
 package org.jgrapht.nio.dot;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.apache.commons.text.*;
-import org.apache.commons.text.translate.*;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.translate.AggregateTranslator;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.LookupTranslator;
 import org.jgrapht.alg.util.Pair;
 import org.jgrapht.nio.*;
 
-import java.io.*;
+import java.io.Reader;
 import java.util.*;
 
 /**
@@ -134,11 +136,11 @@ public class DOTEventDrivenImporter
         extends
         DOTBaseListener
     {
-        private Set<String> vertices;
+        private final Set<String> vertices;
 
         // stacks to maintain scope and state
-        private Deque<SubgraphScope> subgraphScopes;
-        private Deque<State> stack;
+        private final Deque<SubgraphScope> subgraphScopes;
+        private final Deque<State> stack;
 
         public NotifyDOTListener()
         {

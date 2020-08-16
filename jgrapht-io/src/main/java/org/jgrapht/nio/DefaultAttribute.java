@@ -17,7 +17,7 @@
  */
 package org.jgrapht.nio;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * Default implementation of an attribute.
@@ -38,8 +38,8 @@ public class DefaultAttribute<T>
      */
     public static Attribute NULL = new DefaultAttribute<>(null, AttributeType.NULL);
 
-    private T value;
-    private AttributeType type;
+    private final T value;
+    private final AttributeType type;
 
     /**
      * Create a new attribute
@@ -171,11 +171,8 @@ public class DefaultAttribute<T>
         if (type != other.type)
             return false;
         if (value == null) {
-            if (other.value != null)
-                return false;
-        } else if (!value.equals(other.value))
-            return false;
-        return true;
+            return other.value == null;
+        } else return value.equals(other.value);
     }
 
 }

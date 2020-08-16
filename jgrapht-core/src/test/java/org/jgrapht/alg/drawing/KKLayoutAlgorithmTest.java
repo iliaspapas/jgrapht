@@ -1,6 +1,7 @@
-
-
 package org.jgrapht.alg.drawing;
+
+
+
 
 
 
@@ -15,21 +16,21 @@ import org.jgrapht.alg.drawing.model.MapLayoutModel2D;
 
 import org.jgrapht.alg.drawing.model.Box2D;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.util.SupplierUtil;
 
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test {@link KKLayoutalgorithm}
- * @author : Elias Papadakis 
+ * Test {@link KKLayoutAlgorithm}
+ * @author : Elias Papadakis
  */
 public class KKLayoutAlgorithmTest {
 
     public void testA() {
         Box2D Db = new Box2D(500, 400);
         MapLayoutModel2D<Integer> mlayoutmodel = new MapLayoutModel2D<Integer>(Db);
-        SimpleDirectedGraph<Integer, DefaultEdge> sgraph = new SimpleDirectedGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+        SimpleGraph<Integer, DefaultEdge> sgraph = new SimpleGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         sgraph.addVertex(1);
         sgraph.addVertex(2);
         sgraph.addVertex(3);
@@ -45,7 +46,7 @@ public class KKLayoutAlgorithmTest {
         sgraph.addEdge(4,6);
         KKLayoutAlgorithm<Integer, DefaultEdge> alg34 = new KKLayoutAlgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
         Map<Integer, Point2D> result = mlayoutmodel.collect();
-        
+
         assertTrue(result.get(1).getX() > result.get(2).getX());
         assertTrue(result.get(1).getY() < result.get(2).getY());
 
@@ -60,14 +61,14 @@ public class KKLayoutAlgorithmTest {
 
         assertTrue(result.get(3).getX() > result.get(4).getX());
         assertTrue(result.get(3).getY() > result.get(4).getY());
-        
+
         assertTrue(result.get(3).getX() < result.get(6).getX());
         assertTrue(result.get(3).getY() > result.get(6).getY());
 
         assertTrue(result.get(4).getX() < result.get(6).getX());
         assertTrue(result.get(4).getY() > result.get(6).getY());
 
-        
+
     }
 
 
@@ -77,7 +78,7 @@ public class KKLayoutAlgorithmTest {
     public void testB() {
         Box2D Db = new Box2D(500, 400);
         MapLayoutModel2D<Integer> mlayoutmodel = new MapLayoutModel2D<Integer>(Db);
-        SimpleDirectedGraph<Integer, DefaultEdge> sgraph = new SimpleDirectedGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+        SimpleGraph<Integer, DefaultEdge> sgraph = new SimpleGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         sgraph.addVertex(1);
         sgraph.addVertex(2);
         sgraph.addVertex(3);
@@ -100,7 +101,7 @@ public class KKLayoutAlgorithmTest {
         sgraph.addEdge(7,8);
         KKLayoutAlgorithm<Integer, DefaultEdge> alg34 = new KKLayoutAlgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
         Map<Integer, Point2D> result = mlayoutmodel.collect();
-        
+
         assertTrue(result.get(1).getX() > result.get(2).getX());
         assertTrue(result.get(1).getY() < result.get(2).getY());
 
@@ -115,19 +116,19 @@ public class KKLayoutAlgorithmTest {
 
         assertTrue(result.get(3).getX() > result.get(4).getX());
         assertTrue(result.get(3).getY() > result.get(4).getY());
-        
+
         assertTrue(result.get(3).getX() < result.get(6).getX());
         assertTrue(result.get(3).getY() > result.get(6).getY());
 
         assertTrue(result.get(4).getX() < result.get(6).getX());
         assertTrue(result.get(4).getY() > result.get(6).getY());
 
-        
+
     }
     public void testC() {
         Box2D Db = new Box2D(500, 400);
         MapLayoutModel2D<Integer> mlayoutmodel = new MapLayoutModel2D<Integer>(Db);
-        SimpleDirectedGraph<Integer, DefaultEdge> sgraph = new SimpleDirectedGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+        SimpleGraph<Integer, DefaultEdge> sgraph = new SimpleGraph<Integer, DefaultEdge>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         sgraph.addVertex(1);
         sgraph.addVertex(2);
         sgraph.addVertex(3);
@@ -153,7 +154,7 @@ public class KKLayoutAlgorithmTest {
         sgraph.addEdge(9,10);
         KKLayoutAlgorithm<Integer, DefaultEdge> alg34 = new KKLayoutAlgorithm<Integer, DefaultEdge>(sgraph, mlayoutmodel, 0.0002, 0.01);
         Map<Integer, Point2D> result = mlayoutmodel.collect();
-        
+
         assertTrue(result.get(1).getX() > result.get(2).getX());
         assertTrue(result.get(1).getY() < result.get(2).getY());
 
@@ -168,14 +169,14 @@ public class KKLayoutAlgorithmTest {
 
         assertTrue(result.get(3).getX() > result.get(4).getX());
         assertTrue(result.get(3).getY() > result.get(4).getY());
-        
+
         assertTrue(result.get(3).getX() < result.get(6).getX());
         assertTrue(result.get(3).getY() > result.get(6).getY());
 
         assertTrue(result.get(4).getX() < result.get(6).getX());
         assertTrue(result.get(4).getY() > result.get(6).getY());
 
-        
+
     }
 }
 

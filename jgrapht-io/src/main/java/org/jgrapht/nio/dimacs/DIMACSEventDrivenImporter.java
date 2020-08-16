@@ -17,11 +17,18 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import org.jgrapht.alg.util.*;
-import org.jgrapht.nio.*;
+import org.jgrapht.alg.util.Triple;
+import org.jgrapht.nio.BaseEventDrivenImporter;
+import org.jgrapht.nio.EventDrivenImporter;
+import org.jgrapht.nio.ImportEvent;
+import org.jgrapht.nio.ImportException;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A generic importer using consumers for DIMACS format.
@@ -80,7 +87,7 @@ public class DIMACSEventDrivenImporter
     private boolean zeroBasedNumbering;
     private boolean renumberVertices;
 
-    private Map<String, Integer> vertexMap;
+    private final Map<String, Integer> vertexMap;
     private int nextId;
 
     /**

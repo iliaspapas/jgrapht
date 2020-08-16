@@ -37,4 +37,4 @@ pom.xml.releaseBackup
 .classpath
 docs/javadoc*
 docs/_site
-jgrapht-core/nb-configuration.xml
+jgrapht-core/src/main/java/Edge.java

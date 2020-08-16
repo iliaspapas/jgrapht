@@ -17,15 +17,18 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.*;
 
@@ -45,11 +48,7 @@ public class DIMACSImporterTest
             .vertexSupplier(SupplierUtil.createIntegerSupplier()).edgeClass(edgeClass).buildGraph();
 
         DIMACSImporter<Integer, E> importer = new DIMACSImporter<>();
-        try {
-            importer.importGraph(g, new InputStreamReader(in, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // cannot happen
-        }
+        importer.importGraph(g, new InputStreamReader(in, StandardCharsets.UTF_8));
 
         return g;
     }
@@ -142,11 +141,7 @@ public class DIMACSImporterTest
 
         DIMACSImporter<Integer, DefaultWeightedEdge> importer = new DIMACSImporter<>();
         importer.setVertexFactory(id->id+100);
-        try {
-            importer.importGraph(graph, new InputStreamReader(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // cannot happen
-        }
+        importer.importGraph(graph, new InputStreamReader(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
 
         assertEquals(3, graph.vertexSet().size());
         assertEquals(3, graph.edgeSet().size());

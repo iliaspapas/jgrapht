@@ -17,17 +17,20 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.DefaultAttribute;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -112,7 +115,7 @@ public class SimpleGraphMLImporterTest
                 .edgeSupplier(SupplierUtil.createDefaultEdgeSupplier()).buildGraph();
 
         SimpleGraphMLImporter<String, DefaultEdge> importer = new SimpleGraphMLImporter<String, DefaultEdge>();
-        importer.setVertexFactory(id->String.valueOf("node"+id));
+        importer.setVertexFactory(id-> "node" + id);
         importer.importGraph(g, new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
 
         assertEquals(3, g.vertexSet().size());

@@ -17,15 +17,18 @@
  */
 package org.jgrapht.nio.json;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -101,7 +104,7 @@ public class JSONImporterTest
                 .edgeSupplier(SupplierUtil.DEFAULT_EDGE_SUPPLIER).buildGraph();
 
         JSONImporter<String, DefaultEdge> importer = new JSONImporter<>();
-        importer.setVertexFactory(id->String.valueOf("node"+id));
+        importer.setVertexFactory(id-> "node" + id);
         importer.importGraph(g, new StringReader(input));
 
         assertEquals(4, g.vertexSet().size());

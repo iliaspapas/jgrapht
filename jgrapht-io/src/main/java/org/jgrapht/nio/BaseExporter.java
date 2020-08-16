@@ -17,8 +17,11 @@
  */
 package org.jgrapht.nio;
 
-import java.util.*;
-import java.util.function.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Base implementation for an exporter.

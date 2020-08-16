@@ -17,7 +17,7 @@
  */
 package org.jgrapht.nio.dot;
 
-import java.util.regex.*;
+import java.util.regex.Pattern;
 
 /**
  * Class with DOT format related utilities.

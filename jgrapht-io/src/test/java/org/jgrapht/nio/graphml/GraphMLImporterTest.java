@@ -17,16 +17,22 @@
  */
 package org.jgrapht.nio.graphml;
 
-import org.jgrapht.*;
+import org.jgrapht.Graph;
 import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.*;
-import org.jgrapht.nio.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.AttributeType;
+import org.jgrapht.nio.ImportException;
+import org.jgrapht.util.SupplierUtil;
+import org.junit.Test;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -103,7 +109,7 @@ public class GraphMLImporterTest
                 .edgeSupplier(SupplierUtil.createDefaultEdgeSupplier()).buildGraph();
 
         GraphMLImporter<String, DefaultEdge> importer = new GraphMLImporter<>();
-        importer.setVertexFactory(id->String.valueOf("node"+id));
+        importer.setVertexFactory(id-> "node" + id);
         importer.importGraph(g, new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
 
         assertEquals(3, g.vertexSet().size());
@@ -801,7 +807,7 @@ public class GraphMLImporterTest
         GraphMLExporter<String, DefaultEdge> exporter = new GraphMLExporter<>();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g1, os);
-        String output = new String(os.toByteArray(), "UTF-8");
+        String output = new String(os.toByteArray(), StandardCharsets.UTF_8);
 
         Graph<String, DefaultEdge> g2 = readGraph(output, DefaultEdge.class, true, false);
 

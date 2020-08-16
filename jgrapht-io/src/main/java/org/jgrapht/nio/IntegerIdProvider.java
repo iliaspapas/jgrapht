@@ -17,8 +17,9 @@
  */
 package org.jgrapht.nio;
 
-import java.util.*;
-import java.util.function.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Assign a unique integer identifier to a set of elements.

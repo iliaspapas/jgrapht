@@ -17,11 +17,15 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import org.jgrapht.alg.util.*;
-import org.junit.*;
+import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.Triple;
+import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
